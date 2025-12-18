@@ -19,6 +19,8 @@ Open any notebook directly in Colab:
 https://colab.research.google.com/github/[your-repo]/blob/main/[notebook-path]
 ```
 
+> **Tip:** An easy way to convert a Jupyter Notebook from GitHub to Google Colab is by changing `https://github.com/...` to `https://githubtocolab.com/...` in the URL.
+
 ### Option 2: Local Setup
 ```bash
 pip install -r requirements.txt
