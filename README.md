@@ -19,7 +19,12 @@ A 2-day hands-on course for software engineers and data scientists on deploying 
 
 Click any **Open in Colab** badge below to launch a notebook directly. No local setup needed.
 
-**You will need an OpenAI API key** (provided by the instructor) for Labs 1, 4, 5, and 6.
+**You will need an OpenAI API key** (provided by the instructor) for Labs 1, 4, 5, and 6. Store it as a Colab Secret — never paste it directly into a cell:
+1. In Colab, click the **🔑 key icon** in the left sidebar
+2. Click **+ Add new secret**, name it `OPENAI_API_KEY`, paste your key
+3. Enable **Notebook access** for the toggle next to it
+
+The notebooks load it automatically with `userdata.get('OPENAI_API_KEY')`.
 
 > **Enabling GPU for Lab 3 and Capstone Track B:**
 > In Colab, go to **Runtime → Change runtime type → Hardware accelerator → T4 GPU → Save**, then re-run from the top.
