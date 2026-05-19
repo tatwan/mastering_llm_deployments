@@ -1,10 +1,13 @@
 # Capstone — End-to-End LLM Deployment System
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Capstone/capstone_project.ipynb)
-
 **Day 2 Afternoon | ~3 hours | CPU (Track A) or T4 GPU (Track B)**
 
-> **Track B students:** Enable GPU before starting.
+| Track | Notebook | Runtime |
+|-------|----------|---------|
+| **Track A** — Domain RAG Assistant | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Capstone/capstone_track_a.ipynb) | CPU |
+| **Track B** — Fine-Tuned Showcase | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Capstone/capstone_track_b.ipynb) | **T4 GPU** ⚡ |
+
+> **Track B:** Enable GPU before opening the notebook.
 > Runtime → Change runtime type → Hardware accelerator → **T4 GPU** → Save
 
 ---
@@ -30,6 +33,11 @@ Every lab in this course isolated one skill. The capstone puts them all together
 - A research area you know well (Wikipedia articles, arXiv abstracts)
 - A policy domain (regulations, legal docs, public standards)
 - A product you use (open-source project docs, API references)
+
+**Document loading options (covered in the template):**
+- **Inline text** — paste content directly into the notebook (fastest, always works)
+- **Upload PDFs** — use Colab's file picker to upload files into a `pdfs/` folder; the template loads them automatically with `PyPDFLoader`
+- **Web URLs** — load public pages with `WebBaseLoader` (no file upload needed)
 
 ---
 
