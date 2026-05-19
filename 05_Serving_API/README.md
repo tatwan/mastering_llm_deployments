@@ -1,8 +1,8 @@
-# Lab 4 — Serving Models as an API
+# Lab 5 — Serving Models as an API
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/04_Serving_API/lab4_serving_api.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/05_Serving_API/lab5_serving_api.ipynb)
 
-**Day 2 Morning | ~45 minutes | CPU | OpenAI API key required**
+**Day 2 Morning | ~45 minutes | CPU | OpenAI API key + ngrok account required**
 
 ---
 
@@ -23,7 +23,7 @@ You'll write a server with three endpoints:
 The server proxies requests to an OpenAI-compatible backend, which means in development it calls `gpt-4o-mini`, but in production you'd swap the backend to vLLM or any other engine — without changing the server code.
 
 **Part B — Expose and Test**
-Launch the server inside Colab with `uvicorn`, then create a public URL with `pyngrok`. Test it with `httpx` (raw HTTP) and then with the `OpenAI` SDK pointing at your server's URL. Run a provider comparison: your server, OpenAI direct, and OpenAI `gpt-4o`.
+Launch the server inside Colab with `uvicorn`, then create a public URL with `pyngrok`. You'll need a free ngrok account — sign up at [ngrok.com](https://ngrok.com) and add your authtoken as a Colab Secret named `NGROK_AUTH_TOKEN`. Test it with `httpx` (raw HTTP) and then with the `OpenAI` SDK pointing at your server's URL. Run a provider comparison: your server, OpenAI direct, and OpenAI `gpt-4o`.
 
 **Part C — Understanding vLLM**
 A conceptual deep dive into what happens at scale. You'll see why naive single-request serving collapses under concurrent load, and how PagedAttention and continuous batching solve the two core bottlenecks.

@@ -26,6 +26,8 @@ Click any **Open in Colab** badge below to launch a notebook directly. No local 
 
 The notebooks load it automatically with `userdata.get('OPENAI_API_KEY')`.
 
+**Lab 5 also requires a free ngrok account** for the tunnel that exposes your server. Sign up at [ngrok.com](https://ngrok.com), copy your authtoken from the dashboard, and add it as a Colab Secret named `NGROK_AUTH_TOKEN`.
+
 > **Enabling GPU for Lab 4 and Capstone Track B:**
 > In Colab, go to **Runtime → Change runtime type → Hardware accelerator → T4 GPU → Save**, then re-run from the top.
 
