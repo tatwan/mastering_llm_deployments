@@ -1,6 +1,6 @@
-# Lab 6 — Gradio RAG Application
+# Lab 7 — Gradio RAG Application
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/06_Gradio_RAG_App/lab6_gradio_rag_app.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/07_Gradio_RAG_App/lab7_gradio_rag_app.ipynb)
 
 **Day 2 Afternoon | ~45 minutes | CPU | OpenAI API key required**
 
@@ -8,7 +8,7 @@
 
 ## Purpose
 
-A RAG pipeline in a notebook is an engineering demo. A RAG pipeline in a shareable web app is a product. This lab takes everything from Lab 5 and wraps it in a streaming Gradio interface — the fastest path from "model + retrieval" to "thing other people can actually use." Then you red-team your partner's app to understand where grounding fails.
+A RAG pipeline in a notebook is an engineering demo. A RAG pipeline in a shareable web app is a product. This lab takes everything from Lab 6 and wraps it in a streaming Gradio interface — the fastest path from "model + retrieval" to "thing other people can actually use." Then you red-team your partner's app to understand where grounding fails.
 
 ---
 
@@ -26,7 +26,7 @@ A fully functional RAG chat application with:
 
 ## How Streaming Works in Gradio
 
-In Labs 1 and 4, streaming was an explicit choice using the OpenAI SDK's `stream=True` and SSE. In Gradio, streaming is built into the component model — but you still have to write a generator:
+In Labs 1 and 5, streaming was an explicit choice using the OpenAI SDK's `stream=True` and SSE. In Gradio, streaming is built into the component model — but you still have to write a generator:
 
 ```python
 def respond(message, history):

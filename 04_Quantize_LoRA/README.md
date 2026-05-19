@@ -1,6 +1,6 @@
-# Lab 3 — Quantization and QLoRA Fine-Tuning
+# Lab 4 — Quantization and QLoRA Fine-Tuning
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/03_Quantize_LoRA/lab3_quantize_lora.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/04_Quantize_LoRA/lab4_quantize_lora.ipynb)
 
 **Day 1 Afternoon | ~75 minutes | T4 GPU required ⚡**
 

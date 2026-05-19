@@ -1,6 +1,6 @@
-# Lab 5 — RAG Pipeline
+# Lab 6 — RAG Pipeline
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/05_RAG_Pipeline/lab5_rag_pipeline.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/06_RAG_Pipeline/lab6_rag_pipeline.ipynb)
 
 **Day 2 Morning | ~60 minutes | CPU | OpenAI API key required**
 
@@ -54,7 +54,10 @@ You'll convert each chunk to a dense vector using `all-MiniLM-L6-v2` (a free, lo
 **Part C — Retrieval and Generation**
 Build a `rag(question)` function: embed the question → retrieve top-3 chunks → inject into a grounded prompt → generate an answer. Compare RAG vs no-RAG on the same question to see the grounding effect.
 
-**Part D — Evaluation**
+**Part D — Hybrid Search (Bonus)**
+Combine keyword retrieval (BM25S) with semantic retrieval (ChromaDB) using Reciprocal Rank Fusion (RRF). BM25S excels at exact keyword matches — product names, error codes, jargon — where embeddings sometimes miss. Hybrid search gives you the best of both methods.
+
+**Part E — Evaluation**
 Run RAGAS metrics (`faithfulness`, `answer_relevancy`) using `gpt-4o` as the judge. The LLM-as-a-Judge pattern: another LLM grades whether the answer is faithful to the retrieved context and relevant to the question. If RAGAS fails, a manual rubric fallback is provided.
 
 ---
@@ -72,6 +75,8 @@ Run RAGAS metrics (`faithfulness`, `answer_relevancy`) using `gpt-4o` as the jud
 - `all-MiniLM-L6-v2` (384 dimensions, 46 MB) is fast and accurate enough for most tasks
 
 **The prompt is what enforces grounding.** The model will hallucinate if you ask it to answer freely. Adding "Answer ONLY based on the provided context. If the answer is not in the context, say so." forces the model to stay grounded. This is the single most important sentence in a RAG prompt.
+
+**Hybrid search outperforms either method alone.** Pure semantic search misses exact keyword matches (product IDs, error codes, rare terminology). Pure BM25 misses paraphrases and synonyms. Combining them via Reciprocal Rank Fusion (RRF) is a simple but effective way to improve recall without a more complex re-ranker.
 
 **RAG does not prevent all hallucination.** If the relevant chunk isn't retrieved (retrieval failure), or the retrieved chunk is misleading (noisy data), the model can still produce a wrong answer. Evaluation is not optional — it's how you know your system works.
 
@@ -93,3 +98,6 @@ Run RAGAS metrics (`faithfulness`, `answer_relevancy`) using `gpt-4o` as the jud
 | Answer relevancy | RAGAS metric: does the answer address the question that was asked? |
 | LLM-as-a-Judge | Using a capable LLM to evaluate the quality of another LLM's output |
 | ChromaDB | Lightweight in-memory (or persistent) vector database, no server required |
+| BM25S | Fast keyword-based retrieval using the BM25 algorithm with sparse matrices |
+| Hybrid search | Combining dense (semantic) and sparse (keyword) retrieval for better recall |
+| Reciprocal Rank Fusion (RRF) | Score fusion method: `1/(k + rank)` per result list, summed across methods |

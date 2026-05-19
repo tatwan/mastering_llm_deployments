@@ -7,10 +7,11 @@ A 2-day hands-on course for software engineers and data scientists on deploying 
 ## Course Objectives
 
 - Understand the modern GenAI stack (HuggingFace, LangChain, OpenAI-compatible APIs)
+- Write production-grade prompts: zero/few-shot, chain-of-thought, structured output, injection defense
 - Inspect transformer model internals and manage multi-turn conversations
 - Quantize models with bitsandbytes (NF4/INT4) and fine-tune with QLoRA
 - Build and serve OpenAI-compatible APIs with FastAPI, understand vLLM at scale
-- Build a full RAG pipeline with local embeddings, ChromaDB, and LLM-as-Judge evaluation
+- Build a full RAG pipeline with local embeddings, hybrid search, ChromaDB, and LLM-as-Judge evaluation
 - Ship a streaming Gradio app backed by RAG
 
 ## Getting Started
@@ -69,8 +70,8 @@ jupyter lab
 
 ```
 transformers torch bitsandbytes peft trl
-openai langchain langchain-openai
-sentence-transformers chromadb
+openai langchain langchain-openai langchain-community
+sentence-transformers chromadb bm25s
 fastapi uvicorn pyngrok
 gradio
 ragas

@@ -76,7 +76,7 @@ You are expected to run the app live during your presentation. Have it open and 
 
 **Test grounding early.** After you build the basic pipeline, ask a question that's *not* in your knowledge base. If the model makes something up confidently instead of saying "I don't have information about that," fix the system prompt before building the UI.
 
-**The Gradio UI is not the hard part.** Lab 6 gave you the template. The interesting engineering is in the retrieval pipeline and the prompt design.
+**The Gradio UI is not the hard part.** Lab 7 gave you the template. The interesting engineering is in the retrieval pipeline and the prompt design.
 
 **Track B: Start with a small, focused task.** Fine-tuning on 10–20 high-quality examples for a narrow task (e.g., "always respond in JSON with a specific schema," "always answer medical questions with a disclaimer") shows clearer before/after contrast than a broad task.
 

@@ -29,7 +29,7 @@ Before writing a single line of deployment code, you need a map of the tools and
 ## What You Will Build
 
 **Part A — HuggingFace Under the Hood**
-You'll run GPT-2 through `pipeline()`, then peel back the abstraction to see raw tokens, logits, and top-5 next-word predictions. You'll print the memory footprint comparison across FP32, FP16, and INT4 formats — setting up the intuition for Lab 3.
+You'll run GPT-2 through `pipeline()`, then peel back the abstraction to see raw tokens, logits, and top-5 next-word predictions. You'll print the memory footprint comparison across FP32, FP16, and INT4 formats — setting up the intuition for Lab 4.
 
 **Part B — The OpenAI SDK and the `base_url` Swap**
 You'll call `gpt-4o-mini`, stream a response, then do a quality comparison against `gpt-4o`. Then the key exercise: swap `base_url` to point at different providers using the exact same client code. This is the pattern that lets you develop against a local model and ship to a cloud API without changing your application code.
@@ -49,7 +49,7 @@ Every inference engine you encounter — FastAPI, vLLM, Ollama, Together AI, Gro
 
 **`gpt-4o-mini` is your workhorse model.** It's cheap, fast, and capable enough for all labs. `gpt-4o` is used only for quality comparisons where you need to see the difference.
 
-**HuggingFace `pipeline()` is a high-level convenience wrapper.** Under it lives `AutoTokenizer`, `AutoModel`, and a generation loop. Lab 2 takes you inside those layers.
+**HuggingFace `pipeline()` is a high-level convenience wrapper.** Under it lives `AutoTokenizer`, `AutoModel`, and a generation loop. Lab 3 takes you inside those layers.
 
 **LangChain is an orchestration tool, not a serving tool.** It makes it easier to build chains and agents, but it doesn't run models. It calls APIs — yours or OpenAI's.
 

@@ -1,6 +1,6 @@
-# Lab 2 — Inspect Models and Build a Chat Session
+# Lab 3 — Inspect Models and Build a Chat Session
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/02_Inspect_Chat/lab2_inspect_chat.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/03_Inspect_Chat/lab3_inspect_chat.ipynb)
 
 **Day 1 Morning | ~45 minutes | CPU | No API key needed**
 
@@ -36,7 +36,7 @@ You'll build a `ChatSession` class that maintains conversation history, estimate
 
 **Multi-turn context is manual.** Unlike a stateful chat UI, the API is stateless. Every request must include the *full conversation history*. The model has no memory between calls — you maintain the history and send it every time. This means context grows with every turn, and eventually hits the limit.
 
-**Smaller models trade capability for speed.** `Qwen2.5-0.5B` runs on CPU in reasonable time. It will make mistakes a larger model wouldn't. That's intentional — Lab 3 shows how to quantize and fine-tune to compensate.
+**Smaller models trade capability for speed.** `Qwen2.5-0.5B` runs on CPU in reasonable time. It will make mistakes a larger model wouldn't. That's intentional — Lab 4 shows how to quantize and fine-tune to compensate.
 
 ---
 
