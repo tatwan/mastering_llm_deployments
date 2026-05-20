@@ -21,6 +21,8 @@ This is a pre-class sanity check. Run it before Day 1 so you arrive knowing your
 | `sentence-transformers` | Local text embeddings | RAG labs (free, no API key) |
 | `chromadb` | In-memory vector store | RAG retrieval |
 | `openai` | OpenAI SDK | Communicates with any OpenAI-compatible API |
+| `langchain` | LLM application framework | Orchestrates agents and memory |
+| `langchain-openai` | LangChain wrapper for OpenAI | Connects LangChain to the API |
 | `gradio` | Web UI framework | Lab 7 and Capstone |
 
 The notebook installs each library, runs a minimal smoke test on each, and prints `✅ Environment check PASSED` when everything is working.

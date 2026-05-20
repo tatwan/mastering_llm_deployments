@@ -32,11 +32,11 @@ Quantization and LoRA each solve part of this. QLoRA solves all of it.
 **Part A — Quantization Benchmark**
 Load `Qwen2.5-1.5B-Instruct` twice: once in FP16 (baseline) and once in NF4 (4-bit). Measure load time, VRAM usage, and tokens/sec. You'll see the concrete numbers behind the "4-bit is ~4× smaller" claim — and measure the actual quality impact.
 
-**Part B — LoRA Mechanics**
-Attach LoRA adapters to the quantized model. Print the trainable parameter count — it should be around 0.7% of total parameters. Understand the math behind why this works.
+**Part B — LoRA Adapters**
+Attach LoRA adapters to the quantized model. Print the trainable parameter count — it should be around 0.7% of total parameters. Understand the math behind why this works. Train on a 10-example LLM deployment Q&A dataset using `SFTTrainer`.
 
-**Part C — QLoRA Fine-Tuning**
-Train on a 10-example LLM deployment Q&A dataset using `SFTTrainer`. Save the adapter (expect ~10 MB vs ~3 GB for the full model). Reload it and compare the fine-tuned model's answers to the base model.
+**Part C — Save, Inspect, and Reload**
+Save the adapter (expect ~10 MB vs ~3 GB for the full model). Reload it and compare the fine-tuned model's answers to the base model.
 
 **Bonus — Magnitude Pruning**
 Apply global unstructured pruning at 30% sparsity. Measure before/after sparsity and observe the quality trade-off.

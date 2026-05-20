@@ -2,7 +2,7 @@
 
 A 2-day hands-on course for software engineers and data scientists on deploying Large Language Models efficiently and at scale.
 
-![Gemini_Generated_Image_6winox6winox6win](images/Gemini_Generated_Image_6winox6winox6win.png)
+![Gemini_Generated_Image_6winox6winox6win](images/masterllm.png)
 
 ## Course Objectives
 

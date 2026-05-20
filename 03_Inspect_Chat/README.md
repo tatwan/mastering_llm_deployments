@@ -1,4 +1,4 @@
-# Lab 3 — Inspect Models and Build a Chat Session
+# Lab 3 — Inspect & Talk to Models
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/03_Inspect_Chat/lab3_inspect_chat.ipynb)
 
@@ -18,7 +18,7 @@ You can call an LLM API without knowing how it works. But when something goes wr
 You'll load `Qwen2.5-0.5B-Instruct` and print its configuration: hidden size, number of layers, attention heads, vocabulary size, and context window. Then you'll walk the named modules to see the actual layer names. The goal is to connect the abstract "transformer" concept to a real, inspectable Python object.
 
 **Part B — Generation Controls**
-You'll run inference using `apply_chat_template` (the correct way) and compare it to passing a raw string. You'll tune temperature and observe the difference between greedy decoding (deterministic) and sampling (probabilistic). You'll see firsthand why the same prompt gives different outputs at different temperatures.
+You'll run inference using `apply_chat_template` (the correct way) and compare the actual generated outputs to passing a raw string. You'll tune temperature and observe the difference between greedy decoding (deterministic) and sampling (probabilistic). You'll see firsthand why the same prompt gives different outputs at different temperatures.
 
 **Part C — Multi-Turn Chat Session**
 You'll build a `ChatSession` class that maintains conversation history, estimates token count, and warns when approaching the context window limit. You'll run a 3-turn conversation and inspect the full prompt being sent each time — which is the entire history, not just the latest message.
