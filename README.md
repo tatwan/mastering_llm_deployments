@@ -44,7 +44,8 @@ jupyter lab
 | Lab | Topic | Duration | Hardware | Open in Colab |
 |-----|-------|----------|----------|---------------|
 | **Lab 0** — Environment Check | Verify all dependencies install and run | 10 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/00_Environment_Check/lab0_env_check.ipynb) |
-| **Lab 1** — Modern Stack | HuggingFace internals, OpenAI SDK, `base_url` swap, LangChain chains | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_modern_stack.ipynb) |
+| **Lab 1A** — Modern Stack | HuggingFace internals, OpenAI SDK, `base_url` swap, LangChain chains | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_modern_stack.ipynb) |
+| **Lab 1B** — Tool Calling + SQL Agent | Function/tool calling, ReAct mental model, SQL agent from scratch | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_part2_tools_react_sql_agent.ipynb) |
 | **Lab 2** — Prompting Fundamentals | Prompt anatomy, zero/few-shot, CoT, structured output, prompt injection defense | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/02_Prompting/lab2_prompting.ipynb) |
 | **Lab 3** — Inspect & Chat | Model architecture, tokenization, generation controls, multi-turn sessions | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/03_Inspect_Chat/lab3_inspect_chat.ipynb) |
 | **Lab 4** — Quantize + LoRA | INT4/NF4 quantization, LoRA mechanics, QLoRA fine-tuning | 75 min | **T4 GPU** ⚡ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/04_Quantize_LoRA/lab4_quantize_lora.ipynb) |
@@ -59,7 +60,7 @@ jupyter lab
 
 **Day 1**
 - Pre-class: Lab 0 (environment check)
-- AM: Lab 1 → Lab 2 → Lab 3
+- AM: Lab 1A → Lab 1B → Lab 2 → Lab 3
 - PM: Lab 4 (GPU required)
 
 **Day 2**
