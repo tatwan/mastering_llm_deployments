@@ -25,7 +25,7 @@ Click any **Open in Colab** badge below to launch a notebook directly. No local 
 2. Click **+ Add new secret**, name it `OPENAI_API_KEY`, paste your key
 3. Enable **Notebook access** for the toggle next to it
 
-The notebooks load it automatically with `userdata.get('OPENAI_API_KEY')`.
+The notebooks load it automatically from Colab Secrets. Most notebooks also support a local `OPENAI_API_KEY` environment variable for instructor testing.
 
 **Lab 5 also requires a free ngrok account** for the tunnel that exposes your server. Sign up at [ngrok.com](https://ngrok.com), copy your authtoken from the dashboard, and add it as a Colab Secret named `NGROK_AUTH_TOKEN`.
 
@@ -75,9 +75,14 @@ sentence-transformers chromadb bm25s
 fastapi uvicorn pyngrok
 gradio
 ragas
+litellm
 ```
 
 See `requirements.txt` for pinned versions.
+
+## Bonus Labs
+
+The core 00-07 sequence is designed to fit a 2-day workshop. Optional bonus labs extend the course into tool calling, LlamaIndex, agents, LLM gateways, and Hugging Face Spaces deployment. See [Bonus/README.md](Bonus/README.md).
 
 ## Prerequisites
 

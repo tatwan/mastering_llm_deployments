@@ -39,6 +39,26 @@ Implement the Thought → Action → Observation loop by hand using raw OpenAI A
 
 ---
 
+### 04 — LiteLLM Gateway Pattern (`05_litellm_gateway.ipynb`)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/05_litellm_gateway.ipynb)
+
+Turn the `base_url` lesson from Lab 1 and Lab 5 into a gateway pattern. You'll call the same model through LiteLLM, define a small routing table, stream through the gateway abstraction, and log latency/token usage.
+
+**Prerequisite:** Lab 1, Lab 5  
+**Runtime:** CPU | OpenAI API key required
+
+---
+
+### 05 — Hugging Face Spaces Deployment (`06_hf_spaces_deployment.md`)
+
+Deploy the Lab 7 Gradio RAG app as a persistent Hugging Face Space using the template in `Bonus/hf_spaces_template/`. This gives students a real public app URL without Docker, AWS, or local setup.
+
+**Prerequisite:** Lab 7  
+**Runtime:** Browser | OpenAI API key added as a Space secret
+
+---
+
 ## When to Use These
 
 | If you want to… | Open this notebook |
@@ -46,3 +66,5 @@ Implement the Thought → Action → Observation loop by hand using raw OpenAI A
 | Understand how function calling works under the hood | `02_function_calling.ipynb` |
 | See a simpler alternative to LangChain for RAG | `02_rag_llamaindex.ipynb` |
 | Understand how AI agents actually work | `04_react_agent.ipynb` |
+| Understand gateway routing and fallback patterns | `05_litellm_gateway.ipynb` |
+| Turn the Gradio RAG app into a persistent public app | `06_hf_spaces_deployment.md` |
