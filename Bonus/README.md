@@ -2,6 +2,8 @@
 
 These notebooks go deeper on topics introduced in the main labs. They are optional but recommended for students who want to explore further.
 
+For deployment operations topics such as observability, semantic caching, Docker packaging, guardrails, and regression testing, see the **Production Readiness Pack** in Labs 8-12 at the repository root.
+
 ---
 
 ## Notebooks

@@ -52,7 +52,8 @@ jupyter lab
 | **Lab 5** — Serving API | FastAPI OpenAI-compatible server, ngrok tunnels, vLLM concepts | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/05_Serving_API/lab5_serving_api.ipynb) |
 | **Lab 6** — RAG Pipeline | Chunk → embed → retrieve → hybrid search → generate → RAGAS evaluation | 60 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/06_RAG_Pipeline/lab6_rag_pipeline.ipynb) |
 | **Lab 7** — Gradio RAG App | Streaming Gradio app, partner red-team challenge | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/07_Gradio_RAG_App/lab7_gradio_rag_app.ipynb) |
-| **Capstone** | Domain RAG Assistant (CPU) or Fine-Tuned Showcase (T4 GPU) | 3 hr | CPU / T4 ⚡ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Capstone/capstone_project.ipynb) |
+| **Capstone A** | Domain RAG Assistant | 3 hr | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Capstone/capstone_track_a.ipynb) |
+| **Capstone B** | Fine-Tuned Showcase | 3 hr | **T4 GPU** ⚡ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Capstone/capstone_track_b.ipynb) |
 
 > ⚡ **Lab 4 and Capstone Track B require T4 GPU.** All other labs run on the free CPU runtime.
 
@@ -67,6 +68,20 @@ jupyter lab
 - AM: Lab 5 → Lab 6
 - PM: Lab 7 → Capstone
 
+## Production Readiness Pack
+
+The core two-day class is Labs 00-07 plus the Capstone. The labs below are optional mastery labs for students who want the full production deployment picture after class.
+
+| Lab | Topic | Why It Matters | Open in Colab |
+|-----|-------|----------------|---------------|
+| **Lab 8** — Observability and Tracing | Request-level RAG traces, span timing, retrieved chunks, failure diagnosis | Explains why one deployed answer failed | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/08_Observability_Tracing/lab8_observability.ipynb) |
+| **Lab 9** — Semantic Caching | Exact vs semantic cache, threshold tuning, false hits, cost/latency savings | Reduces repeated LLM calls safely | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/09_Semantic_Caching/lab9_semantic_caching.ipynb) |
+| **Lab 10** — Containerization | Dockerfile, OpenAI-compatible FastAPI proxy, runtime secrets, cloud handoff | Packages the API for Cloud Run, ECS, App Runner, or Kubernetes | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/10_Containerization/lab10_docker.ipynb) |
+| **Lab 11** — Guardrails and Security | Input guard, retrieval confidence gate, output redaction, attack reruns | Turns Lab 7 red-teaming into practical mitigation | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/11_Guardrails_Security/lab11_guardrails_security.ipynb) |
+| **Lab 12** — Evaluation Regression | Golden dataset, deterministic checks, optional MLflow logging | Catches prompt/RAG regressions before deployment | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/12_Evaluation_Regression/lab12_evaluation_regression.ipynb) |
+
+These labs connect directly to production evaluation practice: MLflow-style experiment tracking answers "which configuration is better?", while Lab 8 tracing answers "what happened inside this one bad request?"
+
 ## Key Dependencies
 
 ```
@@ -80,6 +95,8 @@ litellm
 ```
 
 See `requirements.txt` for pinned versions.
+
+Production readiness labs install their own optional dependencies inside the notebooks so the core Day 1 setup stays lightweight.
 
 ## Bonus Labs
 

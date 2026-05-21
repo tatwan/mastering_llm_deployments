@@ -35,8 +35,8 @@ Load `Qwen2.5-1.5B-Instruct` twice: once in FP16 (baseline) and once in NF4 (4-b
 **Part B — LoRA Adapters**
 Attach LoRA adapters to the quantized model. Print the trainable parameter count — it should be around 0.7% of total parameters. Understand the math behind why this works. Train on a 10-example LLM deployment Q&A dataset using `SFTTrainer`.
 
-**Part C — Save, Inspect, and Reload**
-Save the adapter (expect ~10 MB vs ~3 GB for the full model). Reload it and compare the fine-tuned model's answers to the base model.
+**Part C — Save, Inspect, Reload, and Prepare for Export**
+Save the adapter (expect ~10 MB vs ~3 GB for the full model). Reload it and compare the fine-tuned model's answers to the base model. Then merge the adapter into a full Hugging Face model directory and review the optional GGUF/Ollama conversion path for local deployment.
 
 **Bonus — Magnitude Pruning**
 Apply global unstructured pruning at 30% sparsity. Measure before/after sparsity and observe the quality trade-off.
@@ -77,3 +77,5 @@ FP32  →  FP16  →  INT8  →  INT4 (NF4)
 | `alpha` | LoRA scaling factor. Usually set to `2×r`. Controls how strongly the adapter influences output. |
 | SFTTrainer | Supervised Fine-Tuning Trainer from HuggingFace `trl`. Wraps the training loop. |
 | Adapter | The small set of trained LoRA weights saved separately from the base model |
+| Merged model | A full Hugging Face model directory after applying the adapter into the base weights |
+| GGUF | The local runtime format used by llama.cpp, Ollama, and LM Studio |

@@ -49,7 +49,7 @@ The invisible parts — chunking strategy, embedding model choice, retrieval qua
 You'll split documents using `RecursiveCharacterTextSplitter` and compare two configurations: small chunks (200 chars / 40 overlap) vs larger chunks (400 chars / 80 overlap). You'll see how chunk size affects what gets retrieved.
 
 **Part B — Embeddings and Vector Store**
-You'll convert each chunk to a dense vector using `all-MiniLM-L6-v2` (a free, local sentence-transformer). Store them in a ChromaDB in-memory collection. Run similarity searches and visualize the embedding space with PCA — watching related concepts cluster together.
+You'll convert each chunk to a dense vector using `all-MiniLM-L6-v2` (a free, local sentence-transformer). Store them in a persistent local ChromaDB folder (`./chroma_db`). Run similarity searches and visualize the embedding space with PCA — watching related concepts cluster together.
 
 **Part C — Retrieval and Generation**
 Build a `rag(question)` function: embed the question → retrieve top-3 chunks → inject into a grounded prompt → generate an answer. Compare RAG vs no-RAG on the same question to see the grounding effect.
