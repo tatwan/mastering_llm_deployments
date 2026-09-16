@@ -6,6 +6,14 @@
 
 ---
 
+## Coming from Lab 2
+
+Lab 2 prompted a **hosted** model (`gpt-4o-mini`) through the OpenAI client. Lab 3 puts a **local** instruct model on CPU so you can read its config, sampling knobs, and chat template. The multi-turn history list from Lab 2 becomes a `ChatSession` class here.
+
+No `OPENAI_API_KEY` today. Lab 4 is the next notebook that needs special hardware (T4).
+
+---
+
 ## Purpose
 
 You can call an LLM API without knowing how it works. But when something goes wrong in production — the model ignores instructions, the conversation loses context, costs spike unexpectedly — understanding the internals is what lets you diagnose and fix it. This lab builds that foundation.
@@ -56,4 +64,10 @@ You'll build a `ChatSession` class that maintains conversation history, estimate
 
 ## Before This Lab
 
-No API key needed — this lab uses a small local model (`Qwen2.5-0.5B-Instruct`, ~900 MB). The first download takes 2–3 minutes on a fresh Colab instance. Run the install cell and let it download while you read through the notebook.
+No API key needed — this lab uses a small local model (`Qwen/Qwen2.5-0.5B-Instruct`, about **1 GB** on first download). Run the install cell and let weights download while you read Part A.
+
+---
+
+## Next
+
+[Lab 4 — Quantize + LoRA](../04_Quantize_LoRA/README.md) — **T4 GPU required**. Same family (Qwen2.5-1.5B), NF4 quantization, a tiny LoRA adapter. Enable the GPU **before** you start that notebook.
