@@ -6,6 +6,12 @@
 
 ---
 
+## Coming from Labs 6, 8, and 11
+
+RAGAS scored quality; traces explained one failure; guards blocked some attacks. This lab is the **gate**: a golden dataset and deterministic must-include / must-not-include checks *before* an LLM judge. Bring three golden questions to the Capstone.
+
+---
+
 ## Purpose
 
 A deployed LLM system changes constantly: prompts, models, documents, chunking, retrieval `k`, guardrails, and dependencies. Without regression tests, a small improvement can silently break another behavior.
@@ -44,3 +50,7 @@ MLflow-style evaluation tracking is still valuable, but students do not need a s
 | Deterministic check | Rule-based pass/fail test that does not call a judge model |
 | Prompt version | Named version of the prompt used for a run |
 | Eval harness | Code that runs test cases and reports pass/fail results |
+
+## Next
+
+End of the Production Readiness Pack. Return to the [Capstone](../Capstone/README.md) with a golden set, or persist the Gradio app via [Bonus 05](../Bonus/05_hf_spaces_deployment.md).
