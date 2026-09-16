@@ -4,6 +4,8 @@
 
 **Day 2 Morning | ~45 minutes | CPU | OpenAI API key + ngrok account required**
 
+**Colab status:** ready, with a localhost fallback. Official ngrok docs still use `pyngrok` on Colab. If the tunnel fails, the OpenAI-compatible server still runs on `127.0.0.1:8000`.
+
 ---
 
 ## Coming from Lab 4
@@ -31,7 +33,7 @@ You'll write a server with three endpoints:
 The server proxies requests to an OpenAI-compatible backend, which means in development it calls `gpt-4o-mini`, but in production you'd swap the backend to vLLM or any other engine — without changing the server code.
 
 **Part B — Expose and Test**
-Launch the server inside Colab with `uvicorn`, then create a public URL with `pyngrok`. You'll need a free ngrok account — sign up at [ngrok.com](https://ngrok.com) and add your authtoken as a Colab Secret named `NGROK_AUTH_TOKEN`. Test it with `httpx` (raw HTTP) and then with the `OpenAI` SDK pointing at your server's URL. Run a provider comparison: your server, OpenAI direct, and Groq.
+Launch the server inside Colab with `uvicorn` (logs to `uvicorn.log` — not a stdout pipe, which can deadlock on Colab). Prove `/health` on **localhost first**, then open a public URL with `pyngrok` (ngrok's documented Colab path). Free ngrok shows a “Visit Site” page in the **browser**; notebook API calls send `ngrok-skip-browser-warning` so they skip it. If the tunnel fails, keep using `http://127.0.0.1:8000`.
 
 **Part C — Understanding vLLM**
 A conceptual deep dive into what happens at scale. You'll see why naive single-request serving collapses under concurrent load, and how PagedAttention and continuous batching solve the two core bottlenecks.
