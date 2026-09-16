@@ -6,6 +6,12 @@
 
 ---
 
+## Coming from Lab 8
+
+Traces explain one request. Caching tries not to pay for the **next** similar one. MiniLM cosine decides a hit; a loose threshold is a false hit (refund vs QLoRA in the notebook).
+
+---
+
 ## Purpose
 
 Serving an LLM app means paying for repeated work. If many users ask equivalent public FAQ questions, caching can reduce latency and cost. But semantic caching is not automatically safe: similar questions can require different answers.
@@ -43,3 +49,7 @@ This lab teaches caching as a deployment tradeoff, not just a speed trick.
 ## Production Warning
 
 Semantic caching is safest for public, stable, non-personal information such as FAQs and product docs. It is risky for personalized, private, legal, medical, financial, or fast-changing answers unless you add strong scoping and invalidation rules.
+
+## Next
+
+[Lab 10 — Containerization](../10_Containerization/README.md). Local Docker; Colab cannot finish the build.
