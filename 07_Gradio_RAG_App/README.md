@@ -6,6 +6,12 @@
 
 ---
 
+## Coming from Lab 6
+
+Lab 6 built `rag(question)`. This lab wraps it in a **streaming Gradio chat** with source citations and a public `gradio.live` URL. Partners red-team that URL (Lab 2 injection, live). The share link is temporary; Bonus 05 is Hugging Face Spaces if you want it to stay up.
+
+---
+
 ## Purpose
 
 A RAG pipeline in a notebook is an engineering demo. A RAG pipeline in a shareable web app is a product. This lab takes everything from Lab 6 and wraps it in a streaming Gradio interface — the fastest path from "model + retrieval" to "thing other people can actually use." Then you red-team your partner's app to understand where grounding fails.
@@ -80,3 +86,11 @@ This exercise is not about breaking things for its own sake. It's about understa
 | Red-teaming | Adversarial testing — deliberately trying to make the system fail or behave unexpectedly |
 | Prompt injection | An input crafted to override or ignore the system prompt's instructions |
 | Grounding | Constraining model output to only what's supported by retrieved context |
+
+---
+
+## Next
+
+Core 2-day path: [Capstone](../Capstone/README.md) (Track A CPU RAG or Track B T4 QLoRA).
+
+Optional pack: [Lab 8 — Observability](../08_Observability_Tracing/README.md). Persistent URL: [Bonus 05 Hugging Face Spaces](../Bonus/05_hf_spaces_deployment.md).
