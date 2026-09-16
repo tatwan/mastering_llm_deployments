@@ -11,7 +11,8 @@ pinned: false
 
 # Master LLM Deployment RAG Demo
 
-This Space is a lightweight deployment template for the Lab 7 RAG assistant.
+Lightweight Lab 7 RAG assistant for a Hugging Face Space.
 
-Set an `OPENAI_API_KEY` repository secret before running the app.
+Add a repository secret named `OPENAI_API_KEY` before the app will start.
 
+This is a public URL, not full production (no auth, rate limits, or tracing).

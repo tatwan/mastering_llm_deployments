@@ -1,72 +1,48 @@
-# Bonus Notebooks
+# Bonus notebooks
 
-These notebooks go deeper on topics introduced in the main labs. They are optional but recommended for students who want to explore further.
+Optional extras. They are **not** on the 2-day clock. Labs 8–12 (observability, cache, Docker, guardrails, golden-set eval) live at the repo root as the Production Readiness Pack.
 
-For deployment operations topics such as observability, semantic caching, Docker packaging, guardrails, and regression testing, see the **Production Readiness Pack** in Labs 8-12 at the repository root.
-
----
-
-## Notebooks
-
-### 01 — Function Calling (`01_function_calling.ipynb`)
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/01_function_calling.ipynb)
-
-Hands-on practice with the OpenAI function calling API. You'll build a weather lookup agent and a DuckDB-backed data analysis agent (analyzing `flight_data.csv`). Covers the full 2-round loop: model decides which tool to call → you execute it → model receives the result and answers.
-
-**Prerequisite:** Lab 1 (Modern Stack)  
-**Runtime:** CPU | OpenAI API key required
+Each notebook uses the same Colab install pattern as the core labs (`uv` + `--system`) and Colab Secrets for keys.
 
 ---
 
-### 02 — RAG with LlamaIndex (`02_rag_llamaindex.ipynb`)
+## Map
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/02_rag_llamaindex.ipynb)
+| # | File | After | Colab? | What is new vs the core labs |
+|---|------|-------|--------|------------------------------|
+| 01 | [Function calling + DuckDB](01_function_calling.ipynb) | Lab 1B | **READY** | Multi-tool agent over **CSV tables** (not the Lab 1B SQLite toy). Weather is one tool among three. |
+| 02 | [RAG with LlamaIndex](02_rag_llamaindex.ipynb) | Lab 6 | **READY** | Same RAG idea, abstracted. Ships `sample_docs/` so Colab does not need PDFs. |
+| 03 | [Text ReAct](03_react_agent.ipynb) | Lab 1B, Lab 2 | **READY** | Legacy **text** Thought/Action loop. Lab 1B already did JSON tools. No `eval()`. |
+| 04 | [LiteLLM gateway](04_litellm_gateway.ipynb) | Lab 1A, Lab 5 | **READY** | Routing table + token/latency log. Optional Groq route. |
+| 05 | [Hugging Face Spaces](05_hf_spaces_deployment.md) | Lab 7 | **Browser** (not Colab) | Persistent public URL for the Gradio RAG app. |
+| 06 | [Ollama local `base_url`](06_ollama_local.md) | Lab 1A, Lab 5 | **NOT COLAB-COMPLETE** | Laptop: same OpenAI client → `http://localhost:11434/v1`. |
 
-Build the same PDF RAG pipeline you saw in Lab 6, but using LlamaIndex instead of LangChain + ChromaDB. Compare how LlamaIndex abstracts away chunking, embedding, and retrieval with just a few lines of code. Covers index persistence to disk and loading from disk.
+Colab badges:
 
-**Prerequisite:** Lab 6 (RAG Pipeline)  
-**Runtime:** CPU | OpenAI API key required
-
----
-
-### 03 — ReAct Agent from Scratch (`03_react_agent.ipynb`)
-
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/03_react_agent.ipynb)
-
-Implement the Thought → Action → Observation loop by hand using raw OpenAI API calls — no frameworks. You'll see exactly what happens inside every LangChain agent. Ends with a discussion of the Model Context Protocol (MCP), the emerging standard that replaces custom tool wiring.
-
-**Prerequisite:** Lab 1 (Modern Stack), Lab 2 (Prompting)  
-**Runtime:** CPU | OpenAI API key required
+- [01](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/01_function_calling.ipynb)
+- [02](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/02_rag_llamaindex.ipynb)
+- [03](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/03_react_agent.ipynb)
+- [04](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/04_litellm_gateway.ipynb)
 
 ---
 
-### 04 — LiteLLM Gateway Pattern (`04_litellm_gateway.ipynb`)
+## When to open which
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/Bonus/04_litellm_gateway.ipynb)
-
-Turn the `base_url` lesson from Lab 1 and Lab 5 into a gateway pattern. You'll call the same model through LiteLLM, define a small routing table, stream through the gateway abstraction, and log latency/token usage.
-
-**Note:** LiteLLM is a fast-moving project. If you encounter routing errors, ensure you install the exact version pinned in the notebook.\n**Prerequisite:** Lab 1, Lab 5  
-**Runtime:** CPU | OpenAI API key required
-
----
-
-### 05 — Hugging Face Spaces Deployment (`05_hf_spaces_deployment.md`)
-
-Deploy the Lab 7 Gradio RAG app as a persistent Hugging Face Space using the template in `Bonus/hf_spaces_template/`. This gives students a real public app URL without Docker, AWS, or local setup.
-
-**Prerequisite:** Lab 7  
-**Runtime:** Browser | OpenAI API key added as a Space secret
-
----
-
-## When to Use These
-
-| If you want to… | Open this notebook |
+| If you want to… | Open |
 |---|---|
-| Understand how function calling works under the hood | `01_function_calling.ipynb` |
-| See a simpler alternative to LangChain for RAG | `02_rag_llamaindex.ipynb` |
-| Understand how AI agents actually work | `03_react_agent.ipynb` |
-| Understand gateway routing and fallback patterns | `04_litellm_gateway.ipynb` |
-| Turn the Gradio RAG app into a persistent public app | `05_hf_spaces_deployment.md` |
+| Drive tools from **files**, not a three-row SQLite table | 01 |
+| See Lab 6’s pipeline as a library | 02 |
+| Read a ReAct paper / debug regex agents | 03 |
+| Route `fast` vs `quality` without rewriting the app | 04 |
+| Keep a Gradio URL after class | 05 |
+| Run the Lab 1A client with **no OpenAI key** on a laptop | 06 |
+
+---
+
+## What we did not add
+
+- MCP server implementation (Bonus 03 names the standard only)
+- vLLM install (Lab 5 concept; needs a GPU box)
+- Kubernetes / SageMaker (out of course scope)
+
+OpenAI key: 01–04 and Spaces. 06 uses a local model. 05 is a Space secret, not a notebook cell.

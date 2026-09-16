@@ -102,7 +102,7 @@ Production readiness labs install their own optional dependencies inside the not
 
 ## Bonus Labs
 
-The core 00-07 sequence is designed to fit a 2-day workshop. Optional bonus labs extend the course into tool calling, LlamaIndex, agents, LLM gateways, and Hugging Face Spaces deployment. See [Bonus/README.md](Bonus/README.md).
+The core 00-07 sequence is designed to fit a 2-day workshop. Optional [Bonus](Bonus/README.md) extras: DuckDB tool calling, LlamaIndex RAG, text ReAct, a LiteLLM gateway, Hugging Face Spaces, and a local Ollama `base_url`. They are not on the 2-day clock.
 
 ## Prerequisites
 

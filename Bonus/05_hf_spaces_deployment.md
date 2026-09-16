@@ -1,89 +1,61 @@
-# Bonus 06 — Deploy the Gradio RAG App to Hugging Face Spaces
+# Bonus 05 — Deploy the Gradio RAG App to Hugging Face Spaces
 
-**Optional | After Lab 7 | Browser-based | OpenAI API key required as a Space secret**
+**Optional | After Lab 7 | Browser | OpenAI API key as a Space secret**
 
-Lab 7 gives you a temporary public Gradio URL from Colab. Hugging Face Spaces gives you a persistent public URL backed by a Git repository. This is the cleanest "ship it" extension for the course without asking students to learn Docker, AWS, Kubernetes, or local setup.
+**Colab:** not needed. This is a browser + Git (or the Hugging Face web UI) lab.
 
-Official Hugging Face docs describe Gradio Spaces as Git repositories, initialized with `sdk: gradio` in the Space `README.md`, and the runtime installs dependencies from a root `requirements.txt`.
+Lab 7’s `share=True` URL dies with the Colab runtime (hours, not days). A Hugging Face Space is a **git repo that stays up**. No Docker, no AWS, no ngrok.
 
-- Gradio Spaces docs: https://huggingface.co/docs/hub/main/spaces-sdks-gradio
-- Spaces dependency docs: https://huggingface.co/docs/hub/spaces-dependencies
+Docs: [Gradio Spaces](https://huggingface.co/docs/hub/main/spaces-sdks-gradio) · [Space dependencies](https://huggingface.co/docs/hub/spaces-dependencies)
 
-## What You Will Deploy
+---
 
-You will deploy a simplified version of the Lab 7 RAG assistant:
+## What you will deploy
 
-- `app.py` — the Gradio application
-- `requirements.txt` — Python dependencies
-- `README.md` — Space metadata with `sdk: gradio`
-- Space secret: `OPENAI_API_KEY`
-
-The template files are in:
+A simplified Lab 7 RAG assistant (inline course KB, MiniLM, Chroma, `gpt-4o-mini`):
 
 ```text
 Bonus/hf_spaces_template/
+  app.py
+  requirements.txt
+  README.md          ← Space metadata (sdk: gradio)
 ```
+
+No LangChain. Four short documents are stored whole. That is enough to prove retrieve → generate → cite.
+
+---
 
 ## Step 1 — Create the Space
 
-1. Go to https://huggingface.co/spaces
-2. Click **Create new Space**
-3. Choose:
-   - SDK: **Gradio**
-   - Hardware: **CPU basic** is enough for this template
-   - Visibility: public or private
-4. Create the Space.
+1. https://huggingface.co/spaces → **Create new Space**
+2. SDK: **Gradio** · Hardware: **CPU basic** · Visibility: your choice
+3. Create
 
-## Step 2 — Add the Secret
+## Step 2 — Secret
 
-In your Space:
+Settings → **Repository secrets** → add `OPENAI_API_KEY`. Never put the key in `app.py`.
 
-1. Open **Settings**
-2. Find **Repository secrets**
-3. Add:
-   - Name: `OPENAI_API_KEY`
-   - Value: your classroom or instructor-provided key
+## Step 3 — Upload the three files
 
-Never paste API keys into `app.py`, `README.md`, or commit history.
+Put them at the **root** of the Space (web UI or `git push`). The Space rebuilds.
 
-## Step 3 — Upload the Template Files
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| `OPENAI_API_KEY is not set` | Missing secret | Add it, then **Factory reboot** |
+| Import error | `requirements.txt` incomplete | Match the template |
+| Answers fail | Bad key | Replace the secret |
+| Slow first question | Cold start + MiniLM download | Wait and retry |
 
-Upload the three files from `Bonus/hf_spaces_template/` into the root of the Space repository:
+## Step 4 — Test
 
-```text
-README.md
-app.py
-requirements.txt
-```
+1. In-scope: “What is QLoRA?”
+2. Serving: “Why does vLLM help throughput?”
+3. Out-of-scope: “What is the weather today?”
 
-You can use the Hugging Face web UI or Git. The web UI is easier for class; Git is better for production teams.
+The first two should cite sources. The third should decline.
 
-## Step 4 — Watch the Build
+## What this is not
 
-After upload, the Space will rebuild. Open the **Logs** tab if it fails.
+No auth, rate limits, traces (Lab 8), or golden-set gate (Lab 12). It is a **persistent public URL** — the missing piece after Lab 7.
 
-Common failures:
-
-| Symptom | Likely Cause | Fix |
-| --- | --- | --- |
-| `OPENAI_API_KEY is not set` | Missing Space secret | Add the secret in Settings |
-| Import error | Missing dependency | Add it to `requirements.txt` |
-| App starts but answers fail | Bad or expired API key | Replace the secret |
-| Slow first response | Cold start | Wait and retry |
-
-## Step 5 — Test Deployment Behavior
-
-Ask three questions:
-
-1. A question in the knowledge base: "What is QLoRA?"
-2. A serving question: "Why does vLLM help throughput?"
-3. An out-of-scope question: "What is the weather today?"
-
-The app should cite sources for the first two and decline the third.
-
-## Reflection
-
-This is not "production" yet. It is a public app deployment. Production adds authentication, persistent logs, rate limits, observability, data governance, and a cost model.
-
-Still, this step matters: students leave with a real URL, not just a notebook output.
-
+Next: [Bonus 06 — Ollama](06_ollama_local.md) if you want a local `base_url`, or the [Capstone](../Capstone/README.md).
