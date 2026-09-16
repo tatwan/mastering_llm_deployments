@@ -6,6 +6,12 @@
 
 ---
 
+## Coming from Lab 7
+
+You shipped a chat URL. This lab asks: *this one answer was wrong — retrieve, prompt, or generate?* Lab 12 is a golden-set gate; Lab 8 is a **single-request trace**. OpenAI key optional.
+
+---
+
 ## Purpose
 
 MLflow is one common way to track RAG experiments and evaluation runs. Whether or not you use MLflow, the production idea is the same: a RAG system is not finished when it answers one question. You need a repeatable way to track experiments, evaluate quality, and explain failures.
@@ -64,3 +70,7 @@ Lab 6 creates a persistent ChromaDB at `./chroma_db` with collection `llm_course
 ## Instructor Notes
 
 If time is short, teach this as a guided demo after Lab 7. If students explore later, the notebook is designed to run even without Phoenix. The manual trace recorder is intentionally simple so the concept survives tooling/version changes.
+
+## Next
+
+[Lab 9 — Semantic Caching](../09_Semantic_Caching/README.md).
