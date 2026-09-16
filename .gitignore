@@ -1,0 +1,10 @@
+# Local instructor / working files — not part of the student course
+AGENTS.md
+progress/
+slides/
+instructor/
+archive/
+
+# Tooling
+.claude/
+.DS_Store
