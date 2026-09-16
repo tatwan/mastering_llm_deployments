@@ -6,6 +6,12 @@
 
 ---
 
+## Coming from Labs 2 and 7
+
+You attacked a live Gradio bot. This lab adds **layered** checks without calling an LLM: regex on input, retrieval score gate, output redaction. Residual risk remains — that is the lesson.
+
+---
+
 ## Purpose
 
 Lab 7 asks students to red-team each other's RAG apps. This lab answers the next question:
@@ -40,3 +46,7 @@ This lab starts with lightweight guards so students understand the control point
 ## Instructor Notes
 
 Keep this practical. Students should leave knowing that system prompts help, but production safety also needs input checks, retrieval confidence, output validation, logging, and human review for high-risk domains.
+
+## Next
+
+[Lab 12 — Evaluation Regression](../12_Evaluation_Regression/README.md).
