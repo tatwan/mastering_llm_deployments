@@ -2,10 +2,16 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/04_Quantize_LoRA/lab4_quantize_lora.ipynb)
 
-**Day 1 Afternoon | ~75 minutes | T4 GPU required ⚡**
+**Day 1 Afternoon | ~75 minutes | T4 GPU required ⚡ | No API key**
 
 > **Enable GPU before opening the notebook:**
 > Runtime → Change runtime type → Hardware accelerator → **T4 GPU** → Save
+
+---
+
+## Coming from Lab 3
+
+Lab 3 inspected Qwen2.5-0.5B on **CPU**. Lab 4 uses the 1.5B sibling on a **T4**. The FP16 vs INT4 table from Lab 1A becomes a real VRAM measurement. Then you attach LoRA and train — the adapter is the artifact you would version and ship.
 
 ---
 
@@ -79,3 +85,9 @@ FP32  →  FP16  →  INT8  →  INT4 (NF4)
 | Adapter | The small set of trained LoRA weights saved separately from the base model |
 | Merged model | A full Hugging Face model directory after applying the adapter into the base weights |
 | GGUF | The local runtime format used by llama.cpp, Ollama, and LM Studio |
+
+---
+
+## Next
+
+[Lab 5 — Serving API](../05_Serving_API/README.md) is Day 2 morning. CPU again. You will put an OpenAI-compatible FastAPI proxy in front of `gpt-4o-mini` (same `base_url` idea as Lab 1A) and expose it with ngrok. Add a Colab Secret `NGROK_AUTH_TOKEN` before class if you can.
