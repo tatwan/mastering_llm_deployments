@@ -2,10 +2,18 @@
 
 | Notebook | Focus | Time | Open in Colab |
 | --- | --- | --- | --- |
-| **Part 1 — Modern GenAI Stack** | HuggingFace internals, OpenAI SDK, `base_url` swap, LangChain chains | ~45 min | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_modern_stack.ipynb) |
-| **Part 2 — Tool Calling, ReAct, and SQL Agents** | Tool/function calling, ReAct mental model, SQL agent from scratch | ~45 min | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_part2_tools_react_sql_agent.ipynb) |
+| **Part 1A — Modern GenAI Stack** | HuggingFace internals, OpenAI SDK, `base_url` swap, LangChain chains | ~45 min | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_modern_stack.ipynb) |
+| **Part 1B — Tool Calling, ReAct, and SQL Agents** | Tool calling, ReAct as a loop, SQL agent from scratch | ~45 min | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_part2_tools_react_sql_agent.ipynb) |
 
-**Day 1 Morning | CPU | OpenAI API key required**
+**Day 1 Morning | CPU | `OPENAI_API_KEY` required** (instructor provides; store as a Colab Secret)
+
+---
+
+## Coming from Lab 0
+
+Lab 0 proved the libraries load and showed tokens, embeddings, and a tiny retrieval. Lab 1 puts a **model** on those tokens, then switches to the hosted API every later lab uses.
+
+You need the OpenAI key from here on (Labs 1A, 1B, 2, 5, 6, 7).
 
 ---
 
@@ -13,14 +21,14 @@
 
 Before writing deployment code, you need two mental models:
 
-1. **LLM as inference engine:** prompt in, text out. This is Part 1.
-2. **LLM as decision-maker:** the model can request actions through tools/functions, observe the results, and answer with grounded data. This is Part 2.
+1. **LLM as inference engine:** prompt in, text out. This is Part 1A.
+2. **LLM as decision-maker:** the model requests actions through tools; your code runs them; the model answers from the observation. This is Part 1B.
 
-Together, these two notebooks orient you on the modern GenAI stack and the agentic pattern that sits on top of it.
+The through-line of the whole course lives in 1A: **one OpenAI client, swap `base_url`.** Lab 5 is that idea with *your* FastAPI server. Groq, vLLM, and Ollama are the same idea with someone else's.
 
 ---
 
-## The Stack You're Learning
+## The stack you are learning
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -34,58 +42,67 @@ Together, these two notebooks orient you on the modern GenAI stack and the agent
 
 ---
 
-## Part 1 — What You Will Build
+## Part 1A — What you will build
 
-**Part A — HuggingFace Under the Hood**
-You'll run GPT-2 through `pipeline()`, then peel back the abstraction to see raw tokens, logits, and top-5 next-word predictions. You'll print the memory footprint comparison across FP32, FP16, and INT4 formats — setting up the intuition for Lab 4.
+**Part A — HuggingFace under the hood.** GPT-2 on CPU through `pipeline()`, then `AutoTokenizer` + `generate()`, then a raw forward pass (logits → top-5 next tokens). A memory table (FP32 / FP16 / INT4) sets up Lab 4.
 
-**Part B — The OpenAI SDK and the `base_url` Swap**
-You'll call `gpt-4o-mini`, stream a response, then do a quality comparison against `gpt-4o`. Then the key exercise: swap `base_url` to point at different providers using the exact same client code. This is the pattern that lets you develop against a local model and ship to a cloud API without changing your application code.
+**Part B — OpenAI SDK and the `base_url` swap.** Call `gpt-4o-mini`, stream, compare to `gpt-4o`. Then the key move: the same `OpenAI(...)` constructor pointed at another backend. Optional Groq if a `GROQ_API_KEY` secret exists — never paste a key into a cell.
 
-**Part C — LangChain Chains**
-You'll build a `ChatPromptTemplate → LLM → StrOutputParser` chain. The goal is not to memorize LangChain's API, but to understand *why* orchestration layers exist: they let you compose, version, and swap components without rewriting everything.
+**Part C — LangChain.** `ChatPromptTemplate | ChatOpenAI | StrOutputParser`. The goal is not to memorize LangChain. The goal is: same `base_url`, higher-level app structure.
 
-## Part 2 — What You Will Build
+## Part 1B — What you will build
 
-**Part A — Tool Calling**
-You'll expose a small Python function to the model as a structured tool. The model will decide when to call it, your code will execute it, and the model will use the result to answer.
+**Part A — One tool.** `estimate_model_memory` (the Lab 1A arithmetic). You watch `finish_reason` change from `stop` to `tool_calls`, run the function yourself, send a `role=tool` observation, and get a grounded answer.
 
-**Part B — ReAct**
-You'll connect tool calling to the ReAct pattern: reasoning plus acting. The notebook explains how older text-parsed ReAct loops relate to modern structured function calling.
+**Part B — One HTTP tool.** Open-Meteo weather (no extra key). Same two-round loop; only the tool changes. If the network is blocked, the function returns mock JSON so the lab continues.
 
-**Part C — SQL Agent From Scratch**
-You'll build a practical SQL agent without LangChain or another framework. The LLM receives a database schema and a `run_sql` tool, asks to run a safe `SELECT`, observes the rows, and explains the answer.
+**Part C — ReAct as a loop.** You already ran ReAct in A–B. This part is a *short* contrast: old text-parsed `Action:` lines vs modern JSON `tool_calls`. Bonus 03 is the longer from-scratch text loop if you want it later.
 
-**Part D — Production Guardrails**
-You'll close with the safety controls a real SQL agent needs: read-only access, allowlisted schema, SQL parsing, row limits, logging, and observability.
+**Part D — SQL agent from scratch.** SQLite table of classroom benchmark numbers (Qwen sizes you will load in Labs 3–4). A `SELECT`-only allowlist. Natural language in, gated SQL, explanation out.
+
+**Exercise.** A TODO cell for `get_efficiency_score` — a second tool on the same database.
 
 ---
 
-## Critical Points
+## Critical points
 
-**The `base_url` pattern is the most important concept in this lab.** Memorize it:
+**Memorize this constructor:**
+
 ```python
 client = OpenAI(api_key=YOUR_KEY, base_url="https://api.openai.com/v1")
 ```
-Every inference engine you encounter — FastAPI, vLLM, Ollama, Together AI, Groq — exposes an OpenAI-compatible endpoint. Change `base_url`, keep everything else. This is how teams swap backends without touching application code.
 
-**`gpt-4o-mini` is your workhorse model.** It's cheap, fast, and capable enough for all labs. `gpt-4o` is used only for quality comparisons where you need to see the difference.
+Every inference engine in this course — FastAPI (Lab 5), vLLM (concepts), Ollama, Groq, LiteLLM (Bonus 04) — speaks this protocol. Change `base_url`. Keep the rest.
 
-**HuggingFace `pipeline()` is a high-level convenience wrapper.** Under it lives `AutoTokenizer`, `AutoModel`, and a generation loop. Lab 3 takes you inside those layers.
+**`gpt-4o-mini` is the workhorse.** Cheap, fast, good enough. `gpt-4o` is only for quality comparisons and Lab 6's judge.
 
-**LangChain is an orchestration tool, not a serving tool.** It makes it easier to build chains and agents, but it doesn't run models. It calls APIs — yours or OpenAI's.
+**`pipeline()` is a convenience wrapper.** Under it: tokenizer, model, generation loop. Lab 3 stays inside those layers with Qwen2.5-0.5B.
+
+**LangChain orchestrates. It does not serve.** It calls APIs — yours or OpenAI's.
+
+**The model never gets a database connection.** You expose `run_sql`. You validate. That boundary is the product.
 
 ---
 
-## Key Terms
+## Key terms
 
 | Term | Definition |
 |------|-----------|
-| `base_url` | The root URL of any OpenAI-compatible API. Swap this to change backends. |
-| `pipeline()` | HuggingFace high-level API for running inference in one line |
-| Logits | Raw unnormalized scores the model outputs before sampling |
-| Temperature | Controls randomness in sampling. 0 = deterministic, >1 = more random |
-| Chain | A LangChain construct that pipes components together: prompt → model → parser |
-| Tool/function calling | Letting the model request a structured function call that your application executes |
-| ReAct | Reasoning and acting loop: think, call a tool, observe, answer |
-| SQL agent | An agent that answers questions by generating and executing constrained SQL queries |
+| `base_url` | Root URL of an OpenAI-compatible API. Swap this to change backends. |
+| `pipeline()` | HuggingFace high-level inference helper |
+| Logits | Raw scores over the vocabulary, before softmax / sampling |
+| Temperature | Sampling randomness. 0 ≈ greedy; higher ≈ more random (Lab 3) |
+| Chain | Prompt → model → parser, piped together |
+| Tool / function calling | Model returns structured `tool_calls`; your code executes them |
+| ReAct | Reason + Act loop: thought, action, observation, answer |
+| SQL agent | An agent that answers by generating and running *constrained* SQL |
+
+---
+
+## Before moving on
+
+1A is done when you have streamed gpt-4o-mini and understood that `base_url` is the only line that must change to retarget a backend.
+
+1B is done when you have seen `finish_reason='tool_calls'`, a SQL agent that reads *your* table (not internet guesses), and you know why regex-ReAct is a teaching device rather than a production plan.
+
+Next: [Lab 2 — Prompting](../02_Prompting/README.md). Same client, now the prompt is the product — including how it fails under injection.
