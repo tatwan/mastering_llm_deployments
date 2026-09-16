@@ -6,6 +6,14 @@
 
 ---
 
+## Coming from Lab 1
+
+Lab 1A gave you `OpenAI(api_key=..., base_url=...)`. Lab 1B showed tool calls as extra message roles. This lab is the **text you send**: prompts as software, including how they fail under injection.
+
+Same Colab Secret: `OPENAI_API_KEY`. Same workhorse: `gpt-4o-mini`.
+
+---
+
 ## Purpose
 
 Prompting is the primary interface between your application logic and the model. A poorly designed prompt produces inconsistent, unparseable, or dangerous outputs. A well-designed one is deterministic, testable, and secure. This lab teaches the patterns every LLM deployment engineer needs — including the security patterns that most tutorials skip.
@@ -26,7 +34,7 @@ You'll implement and compare three patterns on deployment-relevant tasks:
 You'll also build a structured JSON extractor (model returns parseable config objects) and a persona demo (same question, three system prompts → three different recommendation philosophies).
 
 **Part C — Responsible Prompting**
-The section most tutorials skip. You'll build a vulnerable customer support bot where user input is directly concatenated into the prompt string, then attack it with a prompt injection. Then you'll harden it using the system role pattern. Finally, you'll see a prompt leaking attempt — a user trying to extract the system prompt to reverse-engineer the product's AI logic.
+The section most tutorials skip. You will attack a support bot whose user text is concatenated into the prompt, then harden it with the `system` role. Then **indirect** injection: a poisoned RAG chunk (preview of Labs 6–7). Then prompt leaking — extracting a system prompt that should never have held a secret.
 
 ---
 
@@ -49,6 +57,7 @@ The section most tutorials skip. You'll build a vulnerable customer support bot 
 - **Lab 5 (Serving API):** Your FastAPI server's system prompt is a deployment artifact — version it, test it, secure it exactly like you would code
 - **Lab 6 (RAG Pipeline):** The grounding instruction ("Answer ONLY based on the provided context") is both a prompting pattern and a security control against hallucination
 - **Lab 7 (Gradio App):** The partner red-team challenge is a structured prompt injection exercise — you'll attack each other's RAG app system prompts
+- **Lab 3 (Inspect & Chat):** Multi-turn history is explicit — you must resend messages. Lab 3 builds that into a `ChatSession` on a local model.
 
 ---
 
@@ -63,3 +72,18 @@ The section most tutorials skip. You'll build a vulnerable customer support bot 
 | Prompt injection | A crafted input that overrides or hijacks the model's original instructions |
 | Prompt leaking | A crafted input that extracts the system prompt from the model's response |
 | Structured output | Prompting the model to return a specific parseable format (JSON, XML, CSV) |
+
+---
+
+## Student exercises (in the notebook)
+
+Two TODO cells at the end are **intentional**:
+
+1. Write a CoT prompt that picks FastAPI / vLLM / Ollama for a 13B / 2×A100 scenario.
+2. Rewrite `vulnerable_helpdesk` using `system=` (the function starts as `NotImplementedError`).
+
+---
+
+## Next
+
+[Lab 3 — Inspect & Chat](../03_Inspect_Chat/README.md) — local Qwen2.5-0.5B, no API key, architecture numbers and a real chat loop.
