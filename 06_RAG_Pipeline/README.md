@@ -6,6 +6,12 @@
 
 ---
 
+## Coming from Lab 5
+
+Lab 5 served an OpenAI-compatible API. RAG sits **in front of** that call: retrieve with MiniLM + Chroma (Lab 0), generate with `gpt-4o-mini` and a grounded prompt (Lab 2). The notebook calls OpenAI directly so the retrieval lesson stays visible. Lab 7 wraps the same pipeline in Gradio.
+
+---
+
 ## Purpose
 
 A language model's knowledge is frozen at training time. It doesn't know about your company's policies, last quarter's earnings, or the document you uploaded this morning. **Retrieval-Augmented Generation (RAG)** solves this by finding relevant information at query time and injecting it into the prompt. This lab builds the full pipeline from scratch — and then measures whether it actually works.
@@ -101,3 +107,9 @@ Run RAGAS metrics (`faithfulness`, `answer_relevancy`) using `gpt-4o` as the jud
 | BM25S | Fast keyword-based retrieval using the BM25 algorithm with sparse matrices |
 | Hybrid search | Combining dense (semantic) and sparse (keyword) retrieval for better recall |
 | Reciprocal Rank Fusion (RRF) | Score fusion method: `1/(k + rank)` per result list, summed across methods |
+
+---
+
+## Next
+
+[Lab 7 — Gradio RAG App](../07_Gradio_RAG_App/README.md) — streaming chat UI on this pipeline, then a partner red-team of the public Gradio URL.
