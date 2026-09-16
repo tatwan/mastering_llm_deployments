@@ -6,6 +6,12 @@
 
 ---
 
+## Coming from Lab 5
+
+The FastAPI proxy ran in Colab behind ngrok. This lab packages that server as a **Docker image**. The notebook writes the files anywhere; `docker build` needs Docker on **your** machine. Colab cannot finish the build.
+
+---
+
 ## Purpose
 
 Colab, ngrok, and Gradio share links are excellent for learning and demos. Production teams usually ask a different question:
@@ -41,3 +47,7 @@ This lab packages a Lab 5-style OpenAI-compatible FastAPI server into a Docker c
 | Registry | Place where images are pushed before cloud deployment |
 | Health check | Endpoint used by platforms to decide if the service is alive |
 | Secret | Sensitive value injected at runtime, not baked into the image |
+
+## Next
+
+[Lab 11 — Guardrails](../11_Guardrails_Security/README.md). No API key.
