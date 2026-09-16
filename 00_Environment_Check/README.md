@@ -8,39 +8,57 @@
 
 ## Purpose
 
-This is a pre-class sanity check. Run it before Day 1 so you arrive knowing your environment works. If something breaks here, it's far better to debug it now than in the middle of a lab.
+This is a pre-class sanity check, not a modeling lab. Run it before Day 1 so you arrive knowing the runtime works.
+
+You will install the libraries this course uses all week, then run a **tiny smoke test** for each layer of the stack. If something breaks here, debug it now — not in the middle of Lab 1.
+
+You do **not** need to master the APIs yet. Read the short "why" above each cell, run the cell, and confirm the output looks like the checkpoint.
 
 ---
 
 ## What You Will Verify
 
-| Library | What It Does | Why We Need It |
-|---------|-------------|----------------|
-| `transformers` | Load and run HuggingFace models | Core of every lab |
-| `torch` | PyTorch tensor operations | Runtime for all models |
-| `sentence-transformers` | Local text embeddings | RAG labs (free, no API key) |
-| `chromadb` | In-memory vector store | RAG retrieval |
-| `openai` | OpenAI SDK | Communicates with any OpenAI-compatible API |
-| `langchain` | LLM application framework | Orchestrates agents and memory |
-| `langchain-openai` | LangChain wrapper for OpenAI | Connects LangChain to the API |
-| `gradio` | Web UI framework | Lab 7 and Capstone |
+| Check | Library | What you will see | Where it shows up later |
+|-------|---------|-------------------|-------------------------|
+| Tokenizer | `transformers` | A sentence split into token IDs | Labs 1A, 3, 4 |
+| Embeddings | `sentence-transformers` | A 384-number vector | Labs 6–9, 11–12 |
+| Vector store | `chromadb` | Nearest document for a query | Labs 6, 7 |
+| Hosted-LLM client | `openai`, `langchain-openai` | Imports succeed (no API call) | Labs 1, 2, 5–7 |
+| UI toolkit | `gradio` | Import succeeds | Lab 7 |
+| Tensor runtime | `torch` | Version print; CUDA will be `False` on CPU | Labs 3–4 |
 
-The notebook installs each library, runs a minimal smoke test on each, and prints `✅ Environment check PASSED` when everything is working.
+---
+
+## How to Run
+
+**Colab (recommended):** click the badge above. Runtime → CPU is enough.
+
+**Local:** from the repo root, `pip install -r requirements.txt`, then open this notebook in Jupyter. You can skip the install cell if those packages are already present.
+
+The first Colab install takes 2–3 minutes. The MiniLM embedding model is an ~80 MB download the first time only.
 
 ---
 
 ## Critical Points
 
-**You do not need a GPU or an API key for this lab.** Everything runs on CPU and uses free, local models.
+**No GPU and no API key for this lab.** Everything runs on CPU with free local files from Hugging Face Hub.
 
-**The first install cell may take 2–3 minutes** in a fresh Colab instance. This is normal — Colab is installing packages from scratch.
+**You will need accounts later — just not today.**
 
-**If a cell fails,** read the error carefully. The most common issues are:
-- Version conflicts between `torch` and `bitsandbytes` — usually resolved by restarting the runtime and re-running
-- `chromadb` import errors on older Python versions — Colab's default Python 3.10+ should be fine
+| When | What | How you store it |
+|------|------|------------------|
+| Day 1, Lab 1A | `OPENAI_API_KEY` (instructor provides) | Colab Secret named `OPENAI_API_KEY` |
+| Day 1 PM, Lab 4 | T4 GPU | Runtime → Change runtime type → T4 GPU |
+| Day 2, Lab 5 | Free ngrok authtoken | Colab Secret named `NGROK_AUTH_TOKEN` |
+
+Never paste a key into a notebook cell.
+
+**If a cell fails,** read the error, then use the troubleshooting table at the bottom of the notebook. The usual fix is: re-run the install cell, or Runtime → Restart session and start from the top.
 
 ---
 
 ## Before Moving On
 
-Once you see `✅ Environment check PASSED`, you're ready for Day 1. You don't need to understand the code yet — that's what the rest of the labs are for.
+You are done when the last code cell prints `Environment check PASSED`.
+
+Next: [Lab 1A — Modern Stack](../01_Modern_Stack/README.md). That is where you look inside HuggingFace, call `gpt-4o-mini`, and learn the `base_url` swap this course is built on.
