@@ -2,7 +2,7 @@
 
 A 2-day hands-on course for software engineers and data scientists on deploying Large Language Models efficiently and at scale.
 
-![Gemini_Generated_Image_6winox6winox6win](images/masterllm.png)
+![Mastering LLM Deployment](images/masterllm.png)
 
 ## Course Objectives
 
@@ -28,6 +28,8 @@ Click any **Open in Colab** badge below to launch a notebook directly. No local 
 The notebooks load it automatically from Colab Secrets. Most notebooks also support a local `OPENAI_API_KEY` environment variable for instructor testing.
 
 **Lab 5 also requires a free ngrok account** for the tunnel that exposes your server. Sign up at [ngrok.com](https://ngrok.com), copy your authtoken from the dashboard, and add it as a Colab Secret named `NGROK_AUTH_TOKEN`.
+
+**Optional:** Labs 1A and 5 can call Groq with the same OpenAI client if you add a Colab Secret named `GROQ_API_KEY`. Never paste a key into a cell.
 
 > **Enabling GPU for Lab 4 and Capstone Track B:**
 > In Colab, go to **Runtime → Change runtime type → Hardware accelerator → T4 GPU → Save**, then re-run from the top.
