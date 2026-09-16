@@ -6,6 +6,14 @@
 
 ---
 
+## Coming from Lab 4
+
+Lab 4 produced a LoRA adapter on a GPU. This notebook does **not** serve that adapter — Colab CPU cannot run vLLM. You will write an OpenAI-compatible **FastAPI proxy** in front of `gpt-4o-mini`, then point the Lab 1A client at *your* ngrok URL. Same `base_url` swap; now you own the server.
+
+Secrets: `OPENAI_API_KEY` and `NGROK_AUTH_TOKEN` (free at [ngrok.com](https://ngrok.com)). Optional: `GROQ_API_KEY`.
+
+---
+
 ## Purpose
 
 Running a model locally in a notebook is a proof of concept. Serving it as an API is what makes it useful to anyone else. This lab closes that gap: you'll build an OpenAI-compatible HTTP server, expose it to the internet via ngrok, and call it from the same client code you used in Lab 1. Then you'll learn why FastAPI isn't the end of the story — and what vLLM does differently.
@@ -70,3 +78,9 @@ At scale, the difference is 20–30× throughput.
 | Continuous batching | Processing requests as they arrive rather than waiting to fill a fixed batch |
 | Throughput | Requests (or tokens) processed per second across all concurrent users |
 | Latency | Time-to-first-token for a single request |
+
+---
+
+## Next
+
+[Lab 6 — RAG Pipeline](../06_RAG_Pipeline/README.md) — retrieve course text with MiniLM + Chroma, generate with `gpt-4o-mini`. The serving lesson stays: the generator is still an OpenAI-compatible call.
