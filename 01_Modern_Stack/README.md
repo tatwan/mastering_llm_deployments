@@ -5,7 +5,7 @@
 | **Part 1A — Modern GenAI Stack** | HuggingFace internals, OpenAI SDK, `base_url` swap, LangChain chains | ~45 min | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_modern_stack.ipynb) |
 | **Part 1B — Tool Calling, ReAct, and SQL Agents** | Tool calling, ReAct as a loop, SQL agent from scratch | ~45 min | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_part2_tools_react_sql_agent.ipynb) |
 
-**Day 1 Morning | CPU | `OPENAI_API_KEY` required** (instructor provides; store as a Colab Secret)
+**Day 1 Morning | CPU | `OPENAI_API_KEY` required** (instructor provides; Colab Secret in Colab, `.env` locally)
 
 ---
 
