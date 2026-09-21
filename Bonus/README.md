@@ -2,7 +2,7 @@
 
 Optional extras. They are **not** on the 2-day clock. Labs 8–12 (observability, cache, Docker, guardrails, golden-set eval) live at the repo root as the Production Readiness Pack.
 
-Each notebook uses the same Colab install pattern as the core labs (`uv` + `--system`) and Colab Secrets for keys.
+Each notebook uses the same three-line `uv` install cell as the core labs and reads keys from Colab Secrets in Colab or from the repo's `.env` locally.
 
 ---
 
