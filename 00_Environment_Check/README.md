@@ -33,7 +33,7 @@ You do **not** need to master the APIs yet. Read the short "why" above each cell
 
 **Colab (recommended):** click the badge above. Runtime → CPU is enough.
 
-**Local:** from the repo root, `pip install -r requirements.txt`, then open this notebook in Jupyter. You can skip the install cell if those packages are already present.
+**Local:** from the repo root, `uv pip install -r requirements.txt` (or `pip`), then open this notebook in Jupyter. The install cell also works locally; it installs into the kernel's Python.
 
 The first Colab install takes 2–3 minutes. The MiniLM embedding model is an ~80 MB download the first time only.
 
