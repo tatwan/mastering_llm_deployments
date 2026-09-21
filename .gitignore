@@ -8,3 +8,4 @@ archive/
 # Tooling
 .claude/
 .DS_Store
+.env

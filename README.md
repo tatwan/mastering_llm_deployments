@@ -25,7 +25,7 @@ Click any **Open in Colab** badge below to launch a notebook directly. No local 
 2. Click **+ Add new secret**, name it `OPENAI_API_KEY`, paste your key
 3. Enable **Notebook access** for the toggle next to it
 
-The notebooks load it automatically from Colab Secrets. Most notebooks also support a local `OPENAI_API_KEY` environment variable for instructor testing.
+The notebooks load it automatically from Colab Secrets. Running locally, they read the same names from a `.env` file instead (see Local Setup).
 
 **Lab 5 also requires a free ngrok account** for the tunnel that exposes your server. Sign up at [ngrok.com](https://ngrok.com), copy your authtoken from the dashboard, and add it as a Colab Secret named `NGROK_AUTH_TOKEN`.
 
@@ -37,9 +37,12 @@ The notebooks load it automatically from Colab Secrets. Most notebooks also supp
 ### Local Setup
 
 ```bash
-pip install -r requirements.txt
+uv pip install -r requirements.txt   # or: pip install -r requirements.txt
+cp .env.example .env                  # then paste your keys into .env
 jupyter lab
 ```
+
+Each notebook's first cell installs its own packages with `uv` into whichever Python the kernel is using, so the same cell works in Colab and on your laptop. Keys come from Colab Secrets in Colab and from `.env` locally.
 
 ## Lab Structure
 
