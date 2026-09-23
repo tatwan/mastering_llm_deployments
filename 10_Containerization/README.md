@@ -1,52 +1,44 @@
-# Lab 10 - Containerizing an OpenAI-Compatible API
-
+# Lab 10 — Containerizing an OpenAI-Compatible API
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/10_Containerization/lab10_docker.ipynb)
-**Production Readiness Pack | ~60 minutes | Local Docker recommended | OpenAI API key optional for build, required for live proxy**
+
+**Production Readiness Pack | ~45 minutes | Docker on your own machine | `OPENAI_API_KEY` to run the container**
 
 ---
 
 ## Coming from Lab 5
 
-The FastAPI proxy ran in Colab behind ngrok. This lab packages that server as a **Docker image**. The notebook writes the files anywhere; `docker build` needs Docker on **your** machine. Colab cannot finish the build.
+The Lab 5 server was started by a notebook cell and reached through ngrok. Nothing outside Colab can run it that way. This lab packages the same server as a Docker image, which is what a platform team will ask for.
+
+**Colab can write the files but cannot build them**: it has no Docker daemon. Run the notebook anywhere, then build on a machine with Docker. Checked 2026-09-23 on Docker 29: the image builds to about 205 MB, runs as a non-root user, answers `/health`, `/v1/models`, plain and streaming chat through the OpenAI client, and returns a clean `500` when started without a key.
 
 ---
 
-## Purpose
+## What you will build
 
-Colab, ngrok, and Gradio share links are excellent for learning and demos. Production teams usually ask a different question:
+Four files:
 
-> Can I run this service as a standard deployable unit on Cloud Run, ECS, App Runner, Kubernetes, or an internal platform?
+1. `server.py`: Lab 5's routes, with every setting read from environment variables.
+2. `requirements.txt`: pinned versions, so every build installs the same thing.
+3. `.dockerignore`: keeps `.env`, notebooks and local databases out of the image.
+4. `Dockerfile`: slim Python, pinned install, non-root user, `uvicorn --host 0.0.0.0`.
 
-This lab packages a Lab 5-style OpenAI-compatible FastAPI server into a Docker container.
+Then you build it, run it with the key passed in at start-up, and call it with the same OpenAI client you have used since Lab 1A.
 
-## What You Will Build
+## The idea to keep
 
-1. `server.py` with `/health`, `/v1/models`, and `/v1/chat/completions`.
-2. `requirements.txt` for the API runtime.
-3. `.dockerignore` to keep secrets and notebook files out of the image.
-4. A non-root `Dockerfile` with a health-check-friendly API command.
-5. Local build/run commands and an OpenAI SDK smoke test.
-6. A cloud deployment decision guide.
+Code and dependencies go into the image; settings and secrets arrive when the container starts. That split is what lets one image call OpenAI today and your own vLLM server tomorrow (Bonus 03) by changing `UPSTREAM_BASE_URL`. A container packages your server. It does not make a model scale.
 
-## Student Questions This Lab Answers
+## Key terms
 
-- What exactly goes inside a Docker image?
-- How do environment variables and secrets flow into a container?
-- Why must containers be stateless?
-- How do I test an OpenAI-compatible API after packaging it?
-- When is Docker enough, and when do I need vLLM, autoscaling, or Kubernetes?
-
-## Key Terms
-
-| Term | Definition |
+| Term | Meaning |
 | --- | --- |
-| Image | Immutable package built from a Dockerfile |
-| Container | Running instance of an image |
-| Stateless service | Service that does not depend on local mutable state between requests |
-| Registry | Place where images are pushed before cloud deployment |
-| Health check | Endpoint used by platforms to decide if the service is alive |
-| Secret | Sensitive value injected at runtime, not baked into the image |
+| Image | The frozen package built from a Dockerfile |
+| Container | A running instance of an image |
+| Runtime secret | A value passed in when the container starts, never built into the image |
+| Stateless | Keeps nothing on local disk that must survive a restart |
+| Health check | A cheap endpoint the platform polls to decide whether to restart you |
+| Registry | Where images are pushed so a platform can pull them |
 
 ## Next
 
