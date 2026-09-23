@@ -14,79 +14,50 @@ Lab 5 served an OpenAI-compatible API. RAG sits **in front of** that call: retri
 
 ## Purpose
 
-A language model's knowledge is frozen at training time. It doesn't know about your company's policies, last quarter's earnings, or the document you uploaded this morning. **Retrieval-Augmented Generation (RAG)** solves this by finding relevant information at query time and injecting it into the prompt. This lab builds the full pipeline from scratch — and then measures whether it actually works.
+A language model's knowledge stops at its training date, and it never saw your documents. Ask it about them and it answers anyway. **Retrieval-augmented generation (RAG)** finds the relevant passages at question time and puts them in the prompt. This lab builds the pipeline one stage at a time, then measures whether it works.
 
 ---
 
-## The RAG Iceberg
-
-The API call is the tip. Everything below the surface is what determines whether your RAG system is useful:
+## The pipeline
 
 ```
-                    ┌────────────────────┐
-                    │   User Question    │  ← the visible part
-                    └────────┬───────────┘
-                             │
-          ┌──────────────────▼───────────────────────┐
-          │              Retrieval                    │
-          │  1. Embed the question (same model)       │
-          │  2. Similarity search in vector DB        │
-          │  3. Return top-k chunks                   │
-          └──────────────────┬───────────────────────┘
-                             │
-          ┌──────────────────▼───────────────────────┐
-          │              Generation                   │
-          │  "Answer ONLY based on this context: …"  │
-          │  + top-k chunks + user question           │
-          └──────────────────┬───────────────────────┘
-                             │
-                    ┌────────▼───────────┐
-                    │      Answer        │
-                    └────────────────────┘
+INDEX TIME (once)      load → chunk → embed → store in Chroma
+QUERY TIME (per ask)   embed the question → nearest chunks → prompt + chunks → gpt-4o-mini → answer
 ```
 
-The invisible parts — chunking strategy, embedding model choice, retrieval quality, prompt design — determine 80% of your system's quality.
+The API call at the end is the part everyone sees. Chunking, the embedding model, retrieval and the prompt decide most of the quality, and each can fail on its own. The lab is built so you see several of those failures happen.
 
 ---
 
 ## What You Will Build
 
-**Part A — Chunking**
-You'll split documents using `RecursiveCharacterTextSplitter` and compare two configurations: small chunks (200 chars / 40 overlap) vs larger chunks (400 chars / 80 overlap). You'll see how chunk size affects what gets retrieved.
+**Part A — Load and chunk.** Three kinds of source (inline text, two Hugging Face docs pages, the QLoRA paper as a PDF) merged into one list, then split with `RecursiveCharacterTextSplitter` at 200 and 400 characters.
 
-**Part B — Embeddings and Vector Store**
-You'll convert each chunk to a dense vector using `all-MiniLM-L6-v2` (a free, local sentence-transformer). Store them in a persistent local ChromaDB folder (`./chroma_db`). Run similarity searches and visualize the embedding space with PCA — watching related concepts cluster together.
+**Part B — Embed and store.** `all-MiniLM-L6-v2` (free, local, 384 numbers per chunk) into a persistent Chroma folder with cosine distance. Similarity search, how to read the distances, and a PCA plot of the embedding space.
 
-**Part C — Retrieval and Generation**
-Build a `rag(question)` function: embed the question → retrieve top-3 chunks → inject into a grounded prompt → generate an answer. Compare RAG vs no-RAG on the same question to see the grounding effect.
+**Part C — Retrieve and generate.** A `rag()` function with a grounded prompt that cites sources. The same question about SGLang with and without retrieval: without it, `gpt-4o-mini` invents what the name stands for. Then a batch of questions where some come back "not covered", and why.
 
-**Part D — Hybrid Search (Bonus)**
-Combine keyword retrieval (BM25S) with semantic retrieval (ChromaDB) using Reciprocal Rank Fusion (RRF). BM25S excels at exact keyword matches — product names, error codes, jargon — where embeddings sometimes miss. Hybrid search gives you the best of both methods.
+**Part D — Hybrid search.** BM25 keyword retrieval merged with the embeddings through Reciprocal Rank Fusion. It recovers the chunk Part C missed, and it shows what web-page boilerplate does to an index.
 
-**Part E — Evaluation**
-Run RAGAS metrics (`faithfulness`, `answer_relevancy`) using `gpt-4o` as the judge. The LLM-as-a-Judge pattern: another LLM grades whether the answer is faithful to the retrieved context and relevant to the question. If RAGAS fails, a manual rubric fallback is provided.
+**Part E — Evaluation.** RAGAS `faithfulness` and `answer_relevancy`, with `gpt-4o` as the judge, plus a manual rubric that always works.
 
 ---
 
 ## Critical Points
 
-**Embeddings are the semantic fingerprint of text.** Two sentences that mean the same thing produce vectors that are close together in high-dimensional space, even if they share no words. This is what makes semantic search work — the query "how do I make a model smaller?" finds chunks about "model compression" and "quantization."
+**Retrieval failures look like model failures.** In this lab the QLoRA paper produces a few hundred chunks and the course notes about ten. The paper crowds the notes out of the top three, and the model correctly says it was not given the answer. Check the sources line before you touch the prompt or the model.
 
-**Chunking strategy is not a detail — it's a design decision.** Chunks that are too small lose context ("the parameter" — which parameter?). Chunks that are too large dilute relevance and waste context window. The right size depends on your document type and query patterns.
+**The prompt decides how the model handles gaps.** "Answer only from the context" keeps it grounded. But an early version of this lab's prompt, strict rule plus one fixed refusal sentence, made `gpt-4o-mini` refuse six of nine questions it had the context for. Letting it answer part of a question and name what is missing fixed most of them, and off-topic questions are still refused.
 
-**We use local embeddings (`sentence-transformers`), not OpenAI embeddings.** This is intentional:
-- No API key needed for embedding
-- No cost per embedding call
-- Works offline
-- `all-MiniLM-L6-v2` (384 dimensions, 46 MB) is fast and accurate enough for most tasks
+**Chunking is a design decision.** Too small and a chunk loses its context ("the parameter", which one?). Too large and it carries text unrelated to the question. Overlap keeps sentences at the boundaries from being cut in half.
 
-**The prompt is what enforces grounding.** The model will hallucinate if you ask it to answer freely. Adding "Answer ONLY based on the provided context. If the answer is not in the context, say so." forces the model to stay grounded. This is the single most important sentence in a RAG prompt.
+**Local embeddings are the default here on purpose.** `all-MiniLM-L6-v2` is about 90 MB, runs on CPU, needs no key and costs nothing per call. Move to a bigger model when you have evidence retrieval is missing things.
 
-**Hybrid search outperforms either method alone.** Pure semantic search misses exact keyword matches (product IDs, error codes, rare terminology). Pure BM25 misses paraphrases and synonyms. Combining them via Reciprocal Rank Fusion (RRF) is a simple but effective way to improve recall without a more complex re-ranker.
+**Hybrid search covers what embeddings miss.** Embeddings handle paraphrase; BM25 handles exact tokens like `NF4`, product codes and error IDs. Reciprocal Rank Fusion merges the two rankings without a trained re-ranker.
 
-**RAG does not prevent all hallucination.** If the relevant chunk isn't retrieved (retrieval failure), or the retrieved chunk is misleading (noisy data), the model can still produce a wrong answer. Evaluation is not optional — it's how you know your system works.
+**Clean your documents.** Web loaders keep menus and footers. Those chunks match many queries and answer none.
 
-**LLM-as-a-Judge** uses a capable model (like `gpt-4o`) to evaluate the outputs of your system. It's not perfect, but it scales. Human evaluation is the gold standard but doesn't scale to thousands of queries.
+**RAG reduces hallucination; it does not end it.** A missed chunk or a misleading one still produces a wrong answer. Evaluation is how you find out, and an LLM judge is how you do it at scale. Human review stays the gold standard for the cases that matter.
 
 ---
 
@@ -98,12 +69,12 @@ Run RAGAS metrics (`faithfulness`, `answer_relevancy`) using `gpt-4o` as the jud
 | Chunk | A segment of a document. The unit of retrieval. |
 | Embedding | A dense numeric vector representing the semantic meaning of a piece of text |
 | Vector database | A database optimized for similarity search over embeddings |
-| Cosine similarity | A measure of how aligned two vectors are. 1 = identical direction, 0 = unrelated. |
+| Cosine similarity | How aligned two vectors are: 1 = same direction, 0 = unrelated. Chroma reports cosine *distance*, which is 1 minus this. |
 | Top-k retrieval | Return the k chunks most similar to the query embedding |
 | Faithfulness | RAGAS metric: is every claim in the answer supported by the retrieved context? |
 | Answer relevancy | RAGAS metric: does the answer address the question that was asked? |
 | LLM-as-a-Judge | Using a capable LLM to evaluate the quality of another LLM's output |
-| ChromaDB | Lightweight in-memory (or persistent) vector database, no server required |
+| Chroma | A vector database that runs inside your Python process, in memory or in a folder on disk |
 | BM25S | Fast keyword-based retrieval using the BM25 algorithm with sparse matrices |
 | Hybrid search | Combining dense (semantic) and sparse (keyword) retrieval for better recall |
 | Reciprocal Rank Fusion (RRF) | Score fusion method: `1/(k + rank)` per result list, summed across methods |
