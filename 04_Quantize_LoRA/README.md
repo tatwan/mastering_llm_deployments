@@ -104,3 +104,5 @@ Parts A and C begin on the **CPU** with small tensors, then move to the GPU. If 
 [Lab 5 — Serving API](../05_Serving_API/README.md) is Day 2 morning, back on CPU. You will put a model behind an OpenAI-compatible FastAPI server — the `base_url` swap from Lab 1A, except the URL is yours — and expose it with ngrok. Add a Colab Secret `NGROK_AUTH_TOKEN` before class if you can.
 
 The thread: Lab 3 told you what a model costs to hold, Lab 4 made it fit and taught it something, Lab 5 puts it behind an endpoint.
+
+Want to serve the model you just trained? [Bonus 03](../Bonus/03_vllm_serving.ipynb) runs it with vLLM on a T4. Before this runtime ends, run `!zip -r my_lora_adapter.zip my_lora_adapter` and download the zip; Bonus 03 asks for it.
