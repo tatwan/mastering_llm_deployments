@@ -1,56 +1,39 @@
-# Lab 12 - Evaluation and Regression Testing
-
+# Lab 12 — Evaluation and Regression Testing
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/12_Evaluation_Regression/lab12_evaluation_regression.ipynb)
-**Production Readiness Pack | ~60 minutes | CPU | OpenAI API key optional**
+
+**Production Readiness Pack | ~45 minutes | CPU | No API key**
 
 ---
 
-## Coming from Labs 6, 8, and 11
+## Coming from Labs 6, 8 and 11
 
-RAGAS scored quality; traces explained one failure; guards blocked some attacks. This lab is the **gate**: a golden dataset and deterministic must-include / must-not-include checks *before* an LLM judge. Bring three golden questions to the Capstone.
+RAGAS scored answers, a trace explained one failure, guards blocked some attacks. This lab is the gate that keeps all of that from sliding backwards.
 
 ---
 
-## Purpose
+## Why this lab exists
 
-A deployed LLM system changes constantly: prompts, models, documents, chunking, retrieval `k`, guardrails, and dependencies. Without regression tests, a small improvement can silently break another behavior.
+Every change to an LLM app fixes something and can break something else. A golden set, meaning fixed questions with the behaviour each must show and checked by plain code, catches the break before users do.
 
-This lab turns the evaluation-tracking idea into a lightweight deployment regression harness students can reuse in the Capstone.
+The notebook runs two configurations of a small RAG system against four golden questions. The stricter one raises the pass rate from 2 of 4 to 3 of 4, and it also **breaks** "What is QLoRA?", which used to pass. A case-by-case comparison flags it as a regression. The cause is a relevance threshold copied from Lab 11: very short questions embed weakly, and this one scores 0.33 against a gate of 0.42. You lower the gate, rerun to 4 of 4, and then measure how much margin the new threshold really has (0.03).
 
-## What You Will Build
+The system under test is a scripted stand-in, so runs are free and identical. In the Capstone you swap in your real `rag()`; nothing else changes.
 
-1. A golden dataset with in-scope, out-of-scope, and attack questions.
-2. Deterministic checks for must-include and must-not-include behavior.
-3. A pass/fail report comparing two RAG configurations.
-4. Optional MLflow logging for run comparison.
-5. A Capstone-ready evaluation checklist.
+## The idea to keep
 
-## Why Not Only LLM-as-a-Judge?
+Compare case by case, not in total. A pass rate can go up while something that worked breaks, and the broken case is the one users notice. Cheap deterministic checks come first; an LLM judge (Lab 6's RAGAS) is for quality that string checks cannot see.
 
-LLM judges are useful, but they cost money and can change behavior. Production teams often start with cheap deterministic checks:
+## Key terms
 
-- Did the answer cite a source?
-- Did it decline out-of-scope questions?
-- Did it avoid forbidden strings?
-- Did it include required terms?
-
-Then they add LLM-as-a-Judge for nuanced quality evaluation.
-
-## Where MLflow Fits
-
-MLflow-style evaluation tracking is still valuable, but students do not need a separate MLflow lab before this one. This lab uses a robust local harness first, then includes optional MLflow logging so students can compare runs and preserve artifacts. The teaching sequence is: deterministic checks first, MLflow/RAGAS/LLM-as-a-Judge when semantic grading is worth the extra cost and tool complexity.
-
-## Key Terms
-
-| Term | Definition |
+| Term | Meaning |
 | --- | --- |
-| Golden dataset | Stable set of representative test questions |
-| Regression | A change that breaks behavior that used to work |
-| Deterministic check | Rule-based pass/fail test that does not call a judge model |
-| Prompt version | Named version of the prompt used for a run |
-| Eval harness | Code that runs test cases and reports pass/fail results |
+| Golden set | Fixed questions with the behaviour each one must show |
+| Regression | Something that used to pass and now fails |
+| Deterministic check | A pass/fail rule with no model call, e.g. must-include / must-not-include strings |
+| Margin | How far the nearest cases sit from a threshold you rely on |
+| Eval harness | The code that runs the golden set and reports per-case results |
 
 ## Next
 
-End of the Production Readiness Pack. Return to the [Capstone](../Capstone/README.md) with a golden set, or persist the Gradio app via [Bonus 05](../Bonus/05_hf_spaces_deployment.md).
+End of the Production Readiness Pack. Take a golden set back to the [Capstone](../Capstone/README.md), or keep your app online with [Bonus 07 — Hugging Face Spaces](../Bonus/07_hf_spaces_deployment.md).
