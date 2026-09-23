@@ -1,52 +1,45 @@
-# Lab 11 - Guardrails and Deployment Security
-
+# Lab 11 — Guardrails and Deployment Security
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/11_Guardrails_Security/lab11_guardrails_security.ipynb)
-**Production Readiness Pack | ~60 minutes | CPU | No API key required**
+
+**Production Readiness Pack | ~45 minutes | CPU | No API key**
 
 ---
 
 ## Coming from Labs 2 and 7
 
-You attacked a live Gradio bot. This lab adds **layered** checks without calling an LLM: regex on input, retrieval score gate, output redaction. Residual risk remains — that is the lesson.
+A classmate attacked your app in Lab 7, and Lab 2 measured how often injection works. This lab asks what you put in front of the model before real users arrive.
 
 ---
 
-## Purpose
+## Why this lab exists
 
-Lab 7 asks students to red-team each other's RAG apps. This lab answers the next question:
+No single check stops everything, so production systems layer cheap checks at different points in a request. You build three with plain Python:
 
-> We broke it. How do we make it safer before users touch it?
+1. **Input guard**: patterns that usually mean "ignore your instructions".
+2. **Retrieval confidence gate**: decline when nothing relevant was found.
+3. **Output guard**: redact emails, phone numbers and key-shaped strings before the answer leaves.
 
-Students build lightweight, programmatic guardrails around a mini RAG system. The point is not to promise perfect security. The point is to teach layered defenses and honest residual risk.
+Then you break them. Four probes produce four mistakes: two injections that slip past (one because of the single word "the"), and two innocent questions that are refused. The redacted answer still names the person whose contact details it hid. Knowing where your guards fail is the lesson.
 
-## What You Will Build
+The responder is a scripted stand-in, not a model, so the lab is free and repeatable. It obeys every injection, which makes each guard's effect easy to see; a real model obeys sometimes.
 
-1. A vulnerable mini RAG responder.
-2. An input guard for prompt-injection patterns.
-3. A retrieval confidence gate for out-of-scope questions.
-4. An output guard that redacts PII-like strings and fake secrets.
-5. An attack suite that compares before/after behavior.
+## The idea to keep
 
-## Key Terms
+Every guardrail trades one kind of mistake for another, so treat guardrails as product decisions and measure them: block rate, false positives, unfinished user tasks. Keep sensitive data out of the index in the first place; redaction is the last line of defence, not the first.
 
-| Term | Definition |
+## Key terms
+
+| Term | Meaning |
 | --- | --- |
-| Prompt injection | User input that attempts to override system/developer instructions |
-| Guardrail | Programmatic check before or after the LLM call |
-| Retrieval gate | Minimum relevance threshold before generation is allowed |
-| Output redaction | Removing sensitive data from generated text before returning it |
-| Defense in depth | Multiple imperfect controls layered together |
-| Residual risk | The risk that remains after controls are added |
-
-## Frameworks and Tools
-
-This lab starts with lightweight guards so students understand the control points: input checks, retrieval confidence, output redaction, logging, and residual risk. The notebook then maps those control points to production tools such as Guardrails AI, NeMo Guardrails, Llama Guard, Microsoft Presidio, and provider content filters.
-
-## Instructor Notes
-
-Keep this practical. Students should leave knowing that system prompts help, but production safety also needs input checks, retrieval confidence, output validation, logging, and human review for high-risk domains.
+| Prompt injection | Input that tries to override the system's instructions |
+| Guardrail | A programmatic check before or after the model call |
+| Retrieval gate | A minimum relevance score before generation is allowed |
+| Output redaction | Removing sensitive text from an answer before it is returned |
+| False positive / negative | Blocking a legitimate request / allowing a harmful one |
+| Defence in depth | Several imperfect controls layered together |
+| Residual risk | What is still possible after the controls are in place |
 
 ## Next
 
-[Lab 12 — Evaluation Regression](../12_Evaluation_Regression/README.md).
+[Lab 12 — Evaluation and Regression](../12_Evaluation_Regression/README.md).
