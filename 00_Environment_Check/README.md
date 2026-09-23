@@ -35,7 +35,7 @@ You do **not** need to master the APIs yet. Read the short "why" above each cell
 
 **Local:** from the repo root, `uv pip install -r requirements.txt` (or `pip`), then open this notebook in Jupyter. The install cell also works locally; it installs into the kernel's Python.
 
-The first Colab install takes 2–3 minutes. The MiniLM embedding model is an ~80 MB download the first time only.
+The first Colab install takes 2–3 minutes. The MiniLM embedding model is a ~90 MB download the first time only.
 
 ---
 
@@ -61,4 +61,4 @@ Never paste a key into a notebook cell.
 
 You are done when the last code cell prints `Environment check PASSED`.
 
-Next: [Lab 1A — Modern Stack](../01_Modern_Stack/README.md). That is where you look inside HuggingFace, call `gpt-4o-mini`, and learn the `base_url` swap this course is built on.
+Next: [Lab 1A — Modern Stack](../01_Modern_Stack/README.md). That is where you look inside HuggingFace, call a hosted model, and learn the `base_url` swap this course is built on.
