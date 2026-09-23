@@ -46,7 +46,7 @@ The through-line of the whole course lives in 1A: **one OpenAI client, swap `bas
 
 **Part A — HuggingFace under the hood.** GPT-2 on CPU through `pipeline()`, then `AutoTokenizer` + `generate()`, then a raw forward pass (logits → top-5 next tokens). A memory table (FP32 / FP16 / INT4) sets up Lab 4.
 
-**Part B — OpenAI SDK and the `base_url` swap.** Call `gpt-4o-mini`, stream, compare to `gpt-4o`. Then the key move: the same `OpenAI(...)` constructor pointed at another backend. Optional Groq if a `GROQ_API_KEY` secret exists — never paste a key into a cell.
+**Part B — OpenAI SDK and the `base_url` swap.** Call `gpt-5-mini`, stream, compare to `gpt-5`. Then the key move: the same `OpenAI(...)` constructor pointed at another backend. Optional Groq if a `GROQ_API_KEY` secret exists — never paste a key into a cell.
 
 **Part C — LangChain.** `ChatPromptTemplate | ChatOpenAI | StrOutputParser`. The goal is not to memorize LangChain. The goal is: same `base_url`, higher-level app structure.
 
@@ -56,7 +56,7 @@ The through-line of the whole course lives in 1A: **one OpenAI client, swap `bas
 
 **Part B — One HTTP tool.** Open-Meteo weather (no extra key). Same two-round loop; only the tool changes. If the network is blocked, the function returns mock JSON so the lab continues.
 
-**Part C — ReAct as a loop.** You already ran ReAct in A–B. This part is a *short* contrast: old text-parsed `Action:` lines vs modern JSON `tool_calls`. Bonus 03 is the longer from-scratch text loop if you want it later.
+**Part C — ReAct as text.** You already ran ReAct in A–B with JSON `tool_calls`. Here you build the older version: two tools (`c_to_f` and a `calculate` that uses `eval()`, fine for a classroom and nowhere else), a regex that looks for `Action:` lines, and a five-line loop. Then you break it. Five replies the model could plausibly give; guess how many the parser survives before you run the cell.
 
 **Part D — SQL agent from scratch.** SQLite table of classroom benchmark numbers (Qwen sizes you will load in Labs 3–4). A `SELECT`-only allowlist. Natural language in, gated SQL, explanation out.
 
@@ -74,7 +74,7 @@ client = OpenAI(api_key=YOUR_KEY, base_url="https://api.openai.com/v1")
 
 Every inference engine in this course — FastAPI (Lab 5), vLLM (concepts), Ollama, Groq, LiteLLM (Bonus 04) — speaks this protocol. Change `base_url`. Keep the rest.
 
-**`gpt-4o-mini` is the workhorse.** Cheap, fast, good enough. `gpt-4o` is only for quality comparisons and Lab 6's judge.
+**Lab 1A runs on `gpt-5-mini`. Everything after it runs on `gpt-4o-mini`.** GPT-5 models are reasoning models: they only accept the default `temperature`, and they reject `max_tokens` (use `max_completion_tokens`) and `logprobs`. Labs 2 and 3 teach temperature as a knob, so from Lab 1B on the course uses `gpt-4o-mini`, with `gpt-4o` as Lab 6's judge. OpenAI has scheduled the `gpt-5-mini` and `gpt-5` snapshots this lab uses for shutdown on 2026-12-11.
 
 **`pipeline()` is a convenience wrapper.** Under it: tokenizer, model, generation loop. Lab 3 stays inside those layers with Qwen2.5-0.5B.
 
@@ -101,7 +101,7 @@ Every inference engine in this course — FastAPI (Lab 5), vLLM (concepts), Olla
 
 ## Before moving on
 
-1A is done when you have streamed gpt-4o-mini and understood that `base_url` is the only line that must change to retarget a backend.
+1A is done when you have streamed gpt-5-mini and understood that `base_url` is the only line that must change to retarget a backend.
 
 1B is done when you have seen `finish_reason='tool_calls'`, a SQL agent that reads *your* table (not internet guesses), and you know why regex-ReAct is a teaching device rather than a production plan.
 
