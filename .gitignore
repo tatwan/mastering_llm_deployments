@@ -9,3 +9,6 @@ archive/
 .claude/
 .DS_Store
 .env
+
+# Lecture decks never go to the student repo, wherever they land
+*.pptx

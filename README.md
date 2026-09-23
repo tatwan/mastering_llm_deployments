@@ -52,8 +52,8 @@ Each notebook's first cell installs its own packages with `uv` into whichever Py
 | **Lab 1A** — Modern Stack | HuggingFace internals, OpenAI SDK, `base_url` swap, LangChain chains | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_modern_stack.ipynb) |
 | **Lab 1B** — Tool Calling + SQL Agent | Function/tool calling, ReAct mental model, SQL agent from scratch | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/01_Modern_Stack/lab1_part2_tools_react_sql_agent.ipynb) |
 | **Lab 2** — Prompting Fundamentals | Prompt anatomy, zero/few-shot, CoT, structured output, prompt injection defense | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/02_Prompting/lab2_prompting.ipynb) |
-| **Lab 3** — Inspect & Chat | Model architecture, tokenization, generation controls, multi-turn sessions | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/03_Inspect_Chat/lab3_inspect_chat.ipynb) |
-| **Lab 4** — Quantize + LoRA | INT4/NF4 quantization, LoRA mechanics, QLoRA fine-tuning | 75 min | **T4 GPU** ⚡ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/04_Quantize_LoRA/lab4_quantize_lora.ipynb) |
+| **Lab 3** — Inspect & Chat | Attention (Q/K/V), GQA, the KV cache, generation controls, multi-turn sessions | 60 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/03_Inspect_Chat/lab3_inspect_chat.ipynb) |
+| **Lab 4** — Quantize + LoRA | 4-bit internals (block-wise, NF4), LoRA mechanics, QLoRA fine-tuning | 90 min | **T4 GPU** ⚡ | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/04_Quantize_LoRA/lab4_quantize_lora.ipynb) |
 | **Lab 5** — Serving API | FastAPI OpenAI-compatible server, ngrok tunnels, vLLM concepts | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/05_Serving_API/lab5_serving_api.ipynb) |
 | **Lab 6** — RAG Pipeline | Chunk → embed → retrieve → hybrid search → generate → RAGAS evaluation | 60 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/06_RAG_Pipeline/lab6_rag_pipeline.ipynb) |
 | **Lab 7** — Gradio RAG App | Streaming Gradio app, partner red-team challenge | 45 min | CPU | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/tatwan/mastering_llm_deployments/blob/main/07_Gradio_RAG_App/lab7_gradio_rag_app.ipynb) |
@@ -99,13 +99,25 @@ ragas
 litellm
 ```
 
-See `requirements.txt` for pinned versions.
+See `requirements.txt` for the lower bounds the notebooks are written against.
 
 Production readiness labs install their own optional dependencies inside the notebooks so the core Day 1 setup stays lightweight.
 
 ## Bonus Labs
 
-The core 00-07 sequence is designed to fit a 2-day workshop. Optional [Bonus](Bonus/README.md) extras: DuckDB tool calling, LlamaIndex RAG, text ReAct, a LiteLLM gateway, Hugging Face Spaces, and a local Ollama `base_url`. They are not on the 2-day clock.
+The core 00-07 sequence is designed to fit a 2-day workshop. The [Bonus](Bonus/README.md) notebooks are optional and numbered in course order:
+
+| # | Bonus | After | Runs on |
+|---|---|---|---|
+| 01 | Tools over real tables (DuckDB) | Lab 1B | Colab CPU |
+| 02 | Text ReAct against a real model | Lab 1B | Colab CPU |
+| 03 | Serve your own model with vLLM | Labs 4, 5 | **Colab T4** |
+| 04 | LiteLLM gateway: routes, costs, fallbacks, proxy | Lab 5 | Colab CPU |
+| 05 | Ollama: a local backend | Lab 5 | Your laptop |
+| 06 | The Lab 6 pipeline as a library (LlamaIndex) | Lab 6 | Colab CPU |
+| 07 | Deploy to Hugging Face Spaces | Lab 7 | Browser |
+
+They are not on the 2-day clock.
 
 ## Prerequisites
 

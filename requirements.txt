@@ -1,46 +1,52 @@
-# Core dependencies for LLM Deployment Course v2
-transformers>=4.35.0
-torch>=2.0.0
-datasets>=2.14.0
-accelerate>=0.24.0
-evaluate>=0.4.0
-rouge-score>=0.1.2
-openai>=1.0.0
+# Instructor / local runs only. Students on Colab never need this file:
+# every notebook installs its own packages in its first cell.
+# These are lower bounds that match the notebooks' install lines, not exact pins.
+# pyproject.toml lists the same packages with the same bounds; change both together.
 
-# Optimization libraries
-bitsandbytes>=0.41.0
-peft>=0.10.0
-trl>=0.8.0
+# Hosted models and serving (Labs 1A, 1B, 2, 5, 7-10)
+openai>=1.57
+httpx>=0.25
+fastapi>=0.115
+uvicorn>=0.34
+pyngrok>=7.0
+tiktoken>=0.7
+python-dotenv>=1.0
 
-# Deployment libraries
-gradio>=4.0.0
-fastapi>=0.104.0
-uvicorn>=0.24.0
-pyngrok>=7.0.0
-httpx>=0.25.0
-litellm>=1.0.0
+# Local models, quantization, LoRA (Labs 1A, 3, 4, Capstone B)
+transformers>=5
+torch>=2.4
+accelerate>=1.0
+bitsandbytes>=0.45
+peft>=0.14
+trl>=0.16
+datasets>=3.0
+torchao>=0.10
 
-# Utilities
-tqdm>=4.66.0
-pandas>=2.0.0
-matplotlib>=3.7.0
-seaborn>=0.12.0
-numpy>=1.24.0
-scikit-learn>=1.3.0
-pypdf>=4.0.0
-duckdb>=1.0.0
+# RAG and evaluation (Labs 0, 6-9, 11-12, Capstone A)
+sentence-transformers>=5.0
+chromadb>=1.0
+langchain>=0.3
+langchain-core>=0.3
+langchain-openai>=0.3
+langchain-text-splitters>=0.3
+langchain-community>=0.3,<0.4
+ragas>=0.3
+bm25s>=0.2
+pypdf>=4.0
+beautifulsoup4>=4.12
+scikit-learn>=1.3
+pandas>=2.0
+matplotlib>=3.7
 
-# Notebook utilities
-ipywidgets>=8.0.0
-uv>=0.5.0
+# App (Lab 7, Capstone, Bonus 05)
+gradio>=6
 
-# RAG and orchestration
-sentence-transformers>=3.0.0
-chromadb>=0.5.0
-langchain>=0.2.0
-langchain-openai>=0.1.0
-langchain-community>=0.2.0
-ragas>=0.1.0
-bm25s>=0.2.0
-llama-index>=0.10.0
-python-dotenv>=1.0.0
+# Bonus labs
+duckdb>=1.0
+litellm>=1.50
+llama-index>=0.12
+
+# Local notebook kernel
+ipykernel>=6.29
+ipywidgets>=8.1
+uv>=0.5
