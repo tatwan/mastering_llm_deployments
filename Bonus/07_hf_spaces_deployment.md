@@ -1,10 +1,10 @@
-# Bonus 05 — Deploy the Gradio RAG App to Hugging Face Spaces
+# Bonus 07 — Deploy the Gradio RAG App to Hugging Face Spaces
 
 **Optional | After Lab 7 | Browser | OpenAI API key as a Space secret**
 
 **Colab:** not needed. This is a browser + Git (or the Hugging Face web UI) lab.
 
-Lab 7’s `share=True` URL dies with the Colab runtime (hours, not days). A Hugging Face Space is a **git repo that stays up**. No Docker, no AWS, no ngrok.
+Lab 7’s `share=True` link dies with the Colab runtime. A Hugging Face Space is a **git repo that stays up**. A free Hugging Face account is enough for a public Space on CPU. No Docker, no AWS, no ngrok.
 
 Docs: [Gradio Spaces](https://huggingface.co/docs/hub/main/spaces-sdks-gradio) · [Space dependencies](https://huggingface.co/docs/hub/spaces-dependencies)
 
@@ -12,7 +12,7 @@ Docs: [Gradio Spaces](https://huggingface.co/docs/hub/main/spaces-sdks-gradio) �
 
 ## What you will deploy
 
-A simplified Lab 7 RAG assistant (inline course KB, MiniLM, Chroma, `gpt-4o-mini`):
+A simplified Lab 7 RAG assistant (inline course KB, MiniLM, Chroma, `gpt-4o-mini`, Gradio 6):
 
 ```text
 Bonus/hf_spaces_template/
@@ -58,4 +58,4 @@ The first two should cite sources. The third should decline.
 
 No auth, rate limits, traces (Lab 8), or golden-set gate (Lab 12). It is a **persistent public URL** — the missing piece after Lab 7.
 
-Next: [Bonus 06 — Ollama](06_ollama_local.md) if you want a local `base_url`, or the [Capstone](../Capstone/README.md).
+Next: the [Capstone](../Capstone/README.md). Capstone A's app can be deployed the same way: swap `app.py` for your own and keep the secret.

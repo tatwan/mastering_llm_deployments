@@ -1,6 +1,8 @@
-# Bonus 06 — Point the Same Client at Ollama
+# Bonus 05 — Point the Same Client at Ollama
 
-**Optional | After Lab 1A and Lab 5 | Your laptop | No OpenAI key for the local model**
+**Optional | After Lab 5 | Your laptop | No API key**
+
+Checked 2026-09-23 with Ollama 0.33 on macOS: every step below, including step 4.
 
 **Colab:** **not complete.** Ollama needs a local (or remote) daemon. This is the laptop counterpart to Lab 10.
 
@@ -58,9 +60,11 @@ print(
 
 That is the whole lesson. No new SDK.
 
+Read the answer before you trust it. When we ran this, the 0.5B model explained QLoRA as a variant of "the Lora model" for reinforcement learning. It is fluent and wrong, the same warning Lab 3 gave about small models. Running locally changes where the model lives, not how much it knows.
+
 ## Step 4 — Optional: Lab 5 proxy in front of Ollama
 
-On the machine where Ollama runs (not Colab):
+On the machine where Ollama runs (not Colab), in a folder containing Lab 5's `server.py` (the Lab 5 cell that prints the file shows all of it):
 
 ```bash
 export BACKEND_API_KEY=ollama
@@ -77,13 +81,15 @@ Apps still call *your* FastAPI `base_url`. You swapped the backend by changing e
 |---------|----------|
 | OpenAI / Groq | Class, no GPU, quality and tools |
 | Ollama | Laptop demo, air-gapped tryout, Lab 3-sized models |
-| vLLM | GPU box, real concurrency (Lab 5 Part C) |
+| vLLM | A GPU and real concurrency (Lab 5 Part C, [Bonus 03](03_vllm_serving.ipynb)) |
 | Your FastAPI proxy | Custom logic in front of any of the above |
 
-## Bonus 06 complete
+## Bonus 05 complete
 
 - [ ] `curl` listed a model
 - [ ] Lab 1A-shaped client printed a local completion
 - [ ] You can explain why `api_key="ollama"` is a dummy
 
 This is not Colab. Do not spend 2-day clock time installing Ollama in the room unless everyone is on laptops.
+
+Next: [Bonus 06 — RAG with LlamaIndex](06_rag_llamaindex.ipynb), or put a gateway in front of Ollama and OpenAI together with [Bonus 04](04_litellm_gateway.ipynb) (`ollama/qwen2.5:0.5b` is a LiteLLM route).
