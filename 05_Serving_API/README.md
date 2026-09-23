@@ -18,53 +18,42 @@ Secrets: `OPENAI_API_KEY` and `NGROK_AUTH_TOKEN` (free at [ngrok.com](https://ng
 
 ## Purpose
 
-Running a model locally in a notebook is a proof of concept. Serving it as an API is what makes it useful to anyone else. This lab closes that gap: you'll build an OpenAI-compatible HTTP server, expose it to the internet via ngrok, and call it from the same client code you used in Lab 1. Then you'll learn why FastAPI isn't the end of the story — and what vLLM does differently.
+Since Lab 1A you have been the client. Here you write the server behind the URL: an OpenAI-compatible FastAPI app, about fifty lines, that forwards to `gpt-4o-mini` and answers in the OpenAI format. Then you call it with the same client code you already know, and read what changes once a real model sits behind it.
 
 ---
 
 ## What You Will Build
 
-**Part A — FastAPI OpenAI-Compatible Server**
-You'll write a server with three endpoints:
-- `GET /health` — liveness check
-- `GET /v1/models` — model listing (required by the OpenAI SDK)
-- `POST /v1/chat/completions` — the main endpoint, supporting both synchronous and streaming (SSE) responses
+**Part A — Write and launch the server.** `server.py` in five short cells, with three routes:
+- `GET /health` — is the process alive
+- `GET /v1/models` — what the OpenAI SDK lists
+- `POST /v1/chat/completions` — the main route, plain or streaming (SSE)
 
-The server proxies requests to an OpenAI-compatible backend, which means in development it calls `gpt-4o-mini`, but in production you'd swap the backend to vLLM or any other engine — without changing the server code.
+uvicorn runs it in the background on `127.0.0.1:8000`, logging to `uvicorn.log` (not a stdout pipe, which can freeze the server on Colab). `/health` is proved on localhost first, then `pyngrok` opens a public URL (ngrok's documented Colab path). Free ngrok shows a "Visit Site" page in a **browser**; the notebook's API calls send `ngrok-skip-browser-warning` and skip it. If the tunnel fails, everything continues on localhost.
 
-**Part B — Expose and Test**
-Launch the server inside Colab with `uvicorn` (logs to `uvicorn.log` — not a stdout pipe, which can deadlock on Colab). Prove `/health` on **localhost first**, then open a public URL with `pyngrok` (ngrok's documented Colab path). Free ngrok shows a “Visit Site” page in the **browser**; notebook API calls send `ngrok-skip-browser-warning` so they skip it. If the tunnel fails, keep using `http://127.0.0.1:8000`.
+**Part B — Call it.** A health check and a deliberately bad request (FastAPI returns `422` before your code runs). The stock OpenAI client pointed at your URL. Streaming through the SDK, then the raw `data:` lines with plain `httpx`. One loop over several backends: your server, OpenAI, and Groq (`openai/gpt-oss-20b`) if a `GROQ_API_KEY` secret exists.
 
-**Part C — Understanding vLLM**
-A conceptual deep dive into what happens at scale. You'll see why naive single-request serving collapses under concurrent load, and how PagedAttention and continuous batching solve the two core bottlenecks.
+**Part C — What your server cannot do.** Reading, no code. Put a model on your own GPU behind this server and users queue, the KV cache runs out of memory, and 4-bit weights run slowly. Continuous batching, PagedAttention and quantized kernels are vLLM's answers, and vLLM exposes the same route you just wrote. [Bonus 03](../Bonus/03_vllm_serving.ipynb) runs vLLM on a Colab T4 and measures the batching gain.
 
 ---
 
 ## Critical Points
 
-**The OpenAI-compatible endpoint standard is the most important interface in LLM serving.** Every major inference engine — vLLM, Ollama, Together AI, Groq, Mistral, Fireworks — exposes `POST /v1/chat/completions`. One client, swappable backends. Your application code never changes; only `base_url` does.
+**The OpenAI format is the interface, not the vendor.** vLLM, Ollama, TGI, Groq, Together, Fireworks and LiteLLM all expose `POST /v1/chat/completions`. Your client code outlives any one backend. Only `base_url` changes.
 
-**Streaming uses Server-Sent Events (SSE).** Instead of waiting for the full response, the server sends tokens as they're generated using `text/event-stream`. Each chunk is a partial JSON delta. The client reassembles them. This is why ChatGPT "types" — the tokens arrive one at a time, not all at once.
+**Streaming is Server-Sent Events.** The connection stays open and the server writes one `data: {...}` line per chunk, ending with `data: [DONE]`. Nothing about it is specific to LLMs.
 
-**FastAPI is the right choice when:**
-- You need custom business logic (auth, logging, routing, pre/post-processing)
-- You're serving multiple models or mixing model types
-- You want full control over the request/response lifecycle
+**The proxy is not the bottleneck.** FastAPI runs plain `def` handlers in a thread pool, so a server that forwards to OpenAI copes with a classroom of callers. The trouble starts when the handler runs the model itself: `generate()` serves one batch at a time, and a batch waits for its longest answer.
 
-**FastAPI is not the right choice when:**
-- You need maximum throughput for a single LLM at scale
-- You have many concurrent users
-- You need automatic batching and KV-cache optimization
-
-For high-throughput LLM serving, **vLLM** is the industry standard.
-
-**Why KV-cache matters.** Attention is quadratic: every new token must attend to all previous tokens. The key-value matrices for previous tokens can be cached to avoid recomputation. vLLM's **PagedAttention** manages this cache like virtual memory in an OS — efficiently allocating and sharing it across requests. Without this, memory fragmentation causes 60–80% of GPU memory to be wasted.
+**The KV cache decides how many users fit.** Lab 3 measured it growing with every token of every conversation. Naive servers reserve the maximum length per request; the vLLM paper found existing systems wasting 60 to 80 % of KV cache memory that way. PagedAttention allocates the cache in small blocks as it grows and brings the waste under 4 %.
 
 **Continuous batching vs static batching:**
-- Static: wait to fill a batch, process all at once, return all at once. Simple but slow.
-- Continuous: new requests join the batch as soon as a slot opens. Keeps the GPU fully utilized.
+- Static: collect a batch, run it, return it. Every request waits for the slowest one.
+- Continuous: after every decoding step, finished sequences leave and waiting ones join. The GPU stays busy.
 
-At scale, the difference is 20–30× throughput.
+How much it adds up to depends on the model and the traffic. When vLLM launched in 2023, its authors measured up to 24× the throughput of plain Hugging Face Transformers and 2 to 4× over the best serving systems of the time.
+
+**FastAPI and vLLM are not rivals.** FastAPI is where your logic goes: auth, logging, routing, guardrails. vLLM is where the model runs. Production often runs both, FastAPI in front and vLLM behind, which is this lab's shape with OpenAI swapped out.
 
 ---
 
@@ -72,17 +61,17 @@ At scale, the difference is 20–30× throughput.
 
 | Term | Definition |
 |------|-----------|
-| OpenAI-compatible endpoint | Any HTTP server implementing the `/v1/chat/completions` schema |
-| SSE | Server-Sent Events — HTTP streaming where the server pushes chunks to the client |
-| ngrok | Tunnel service that gives a public HTTPS URL to a local server |
-| KV-cache | Cache of key-value attention matrices for previously processed tokens |
-| PagedAttention | vLLM's memory management system for the KV-cache, inspired by OS paging |
-| Continuous batching | Processing requests as they arrive rather than waiting to fill a fixed batch |
-| Throughput | Requests (or tokens) processed per second across all concurrent users |
-| Latency | Time-to-first-token for a single request |
+| OpenAI-compatible endpoint | Any HTTP server implementing the `/v1/chat/completions` request and response shapes |
+| SSE | Server-Sent Events — an open HTTP response the server writes `data:` lines into |
+| ngrok | Tunnel service that gives a local port a public HTTPS URL |
+| KV cache | Stored keys and values for tokens already processed, so each new token does not recompute them (Lab 3) |
+| PagedAttention | vLLM's block-based allocation for the KV cache, modelled on OS memory paging |
+| Continuous batching | Requests join and leave the running batch at every decoding step |
+| Throughput | Tokens (or requests) per second across all users |
+| Latency | How long one user waits. Time to first token matters for streaming UIs; total time matters for everything else (Lab 7 shows total) |
 
 ---
 
 ## Next
 
-[Lab 6 — RAG Pipeline](../06_RAG_Pipeline/README.md) — retrieve course text with MiniLM + Chroma, generate with `gpt-4o-mini`. The serving lesson stays: the generator is still an OpenAI-compatible call.
+[Lab 6 — RAG Pipeline](../06_RAG_Pipeline/README.md) — retrieve course text with MiniLM and Chroma, generate with `gpt-4o-mini`. The generator is still an OpenAI-compatible call, so it could go through the server you built here.
