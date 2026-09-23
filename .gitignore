@@ -4,6 +4,7 @@ progress/
 slides/
 instructor/
 archive/
+docs/
 
 # Tooling
 .claude/
