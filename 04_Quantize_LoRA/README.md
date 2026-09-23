@@ -21,6 +21,8 @@ Lab 4 tests those numbers on real hardware, then goes further: you take a model 
 
 A 7B model in FP32 needs about 28 GB of VRAM. A free Colab T4 has 15. This lab covers the two techniques that close that gap — **quantization** to make the model fit, and **LoRA** to make fine-tuning affordable — and it explains the mechanism of each rather than just the API call.
 
+For the bigger picture, read [READING.md](READING.md) before or after the lab. It covers what PEFT is, why QLoRA trains adapters next to a 4-bit base instead of changing the 4-bit weights, and why teams quantize a second time after training.
+
 ---
 
 ## What You Will Build
